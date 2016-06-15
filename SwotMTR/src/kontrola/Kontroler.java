@@ -39,6 +39,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import clientgui.ClientGUI;
 import clientgui.PocetniProzor;
+import clientgui.ProzorOceniStrategiju;
 import communication.Client;
 import gui.GUIDodajSWOT;
 import gui.GUIUporediStrategije;
@@ -603,5 +604,44 @@ public class Kontroler {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public static void oceniStrategiju(int selectedRow) {
+		ProzorOceniStrategiju prozor = new ProzorOceniStrategiju(logika.getStrategije().get(selectedRow), selectedRow);
+		
+	}
+	//pisao u 4 ujutru, ne znam zasto iz guia ne dodajem atraktivnost direktno u snagu, 
+	//izbegavam semanticke vratolomije xexe, iako mozak ne radi, nadam se da aplikacija hoce
+	
+	public static void oceniSnagu(int rb, String naziv, int atraktivnost) {
+		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSnage();
+		for (SwotStrat swotStrat : pom) {
+			if(swotStrat.getNaziv().equals(naziv))
+				swotStrat.setAtraktivnost(atraktivnost);
+		}
+		
+	}
+	public static void oceniSlabost(int rb, String naziv, int atraktivnost) {
+		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSlabosti();
+		for (SwotStrat swotStrat : pom) {
+			if(swotStrat.getNaziv().equals(naziv))
+				swotStrat.setAtraktivnost(atraktivnost);
+		}
+		
+	}
+	public static void oceniSansu(int rb, String naziv, int atraktivnost) {
+		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSanse();
+		for (SwotStrat swotStrat : pom) {
+			if(swotStrat.getNaziv().equals(naziv))
+				swotStrat.setAtraktivnost(atraktivnost);
+		}
+		
+	}
+	public static void oceniPretnje(int rb, String naziv, int atraktivnost) {
+		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getPretnje();
+		for (SwotStrat swotStrat : pom) {
+			if(swotStrat.getNaziv().equals(naziv))
+				swotStrat.setAtraktivnost(atraktivnost);
+		}
+		
 	}
 }
