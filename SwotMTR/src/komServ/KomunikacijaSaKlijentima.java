@@ -88,6 +88,7 @@ public class KomunikacijaSaKlijentima {
 			for(SwotStrat pretnja : s.getPretnje()){
 				pretnja.setAtraktivnost(pretnja.getAtraktivnost()/broj);
 			}
+			s.izracunajSumuUkupnihAtraktivnosti();
 		}
 	}
 }

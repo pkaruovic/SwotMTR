@@ -131,6 +131,8 @@ public class Strategija implements Serializable{
 	 * atraktivnosti predstavlja atraktivnost same strategije.
 	 */
 	public void izracunajSumuUkupnihAtraktivnosti(){
+		sumaUkupnihAtraktivnosti = 0;
+		
 		for (SwotStrat swotStrat : pretnje) {
 			sumaUkupnihAtraktivnosti+= swotStrat.getUkupnaAtraktivnost();
 		}
