@@ -49,25 +49,43 @@ public class KomunikacijaSaKlijentima {
 		for(Strategija s : strategije){
 			str = str + s.getNaziv() + "\t";
 			
-			for(SwotStrat swot : s.getSnage()){
-				str = str + swot.getNaziv() + " " + swot.getPonder() + " ";
-			}
-			str = str.trim() + "\t";
-			for(SwotStrat swot : s.getSlabosti()){
-				str = str + swot.getNaziv() + " " + swot.getPonder() + " ";
-			}
-			str = str.trim() + "\t";
-			for(SwotStrat swot : s.getSanse()){
-				str = str + swot.getNaziv() + " " + swot.getPonder() + " ";
-			}
-			str = str.trim() + "\t";
-			for(SwotStrat swot : s.getPretnje()){
-				str = str + swot.getNaziv() + " " + swot.getPonder() + " ";
+			if(s.getSnage().isEmpty())
+				str += "nema\t";
+			else{
+				for(SwotStrat swot : s.getSnage()){
+					str = str + swot.getNaziv() + " " + swot.getPonder() + " ";
+				}
+				str = str.trim() + "\t";
 			}
 			
-			str = str + "\n";
+			if(s.getSlabosti().isEmpty())
+				str += "nema\t";
+			else{
+				for(SwotStrat swot : s.getSlabosti()){
+					str = str + swot.getNaziv() + " " + swot.getPonder() + " ";
+				}
+				str = str.trim() + "\t";
+			}
+			if(s.getSanse().isEmpty())
+				str += "nema\t";
+			else{
+				for(SwotStrat swot : s.getSanse()){
+					str = str + swot.getNaziv() + " " + swot.getPonder() + " ";
+				}
+				str = str.trim() + "\t";
+			}
+			
+			if(s.getPretnje().isEmpty())
+				str += "nema\t";
+			else{
+				for(SwotStrat swot : s.getPretnje()){
+					str = str + swot.getNaziv() + " " + swot.getPonder() + " ";
+				}
+			
+				str = str + "\n";
+			}
 		}
-			
+			 
 		return str;
 	}
 	
