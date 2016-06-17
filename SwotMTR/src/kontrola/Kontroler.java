@@ -343,6 +343,8 @@ public class Kontroler {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					brojaci[0] = 0;
+					brojaci[1] = 0;
 					logika = new Logika();
 					frame = new GlavniProzor();
 					frame.setVisible(true);
@@ -614,7 +616,7 @@ public class Kontroler {
 	//pisao u 4 ujutru, ne znam zasto iz guia ne dodajem atraktivnost direktno u snagu, 
 	//izbegavam semanticke vratolomije xexe, iako mozak ne radi, nadam se da aplikacija hoce
 	
-	public static void oceniSnagu(int rb, String naziv, int atraktivnost) {
+	public static void oceniSnagu(int rb, String naziv, double atraktivnost) {
 		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSnage();
 		for (SwotStrat swotStrat : pom) {
 			if(swotStrat.getNaziv().equals(naziv))
@@ -622,7 +624,7 @@ public class Kontroler {
 		}
 		
 	}
-	public static void oceniSlabost(int rb, String naziv, int atraktivnost) {
+	public static void oceniSlabost(int rb, String naziv, double atraktivnost) {
 		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSlabosti();
 		for (SwotStrat swotStrat : pom) {
 			if(swotStrat.getNaziv().equals(naziv))
@@ -630,7 +632,7 @@ public class Kontroler {
 		}
 		
 	}
-	public static void oceniSansu(int rb, String naziv, int atraktivnost) {
+	public static void oceniSansu(int rb, String naziv, double atraktivnost) {
 		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSanse();
 		for (SwotStrat swotStrat : pom) {
 			if(swotStrat.getNaziv().equals(naziv))
@@ -638,7 +640,7 @@ public class Kontroler {
 		}
 		
 	}
-	public static void oceniPretnje(int rb, String naziv, int atraktivnost) {
+	public static void oceniPretnje(int rb, String naziv, double atraktivnost) {
 		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getPretnje();
 		for (SwotStrat swotStrat : pom) {
 			if(swotStrat.getNaziv().equals(naziv))

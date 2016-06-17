@@ -95,7 +95,7 @@ public class Strategija implements Serializable{
 	 * @param snaga
 	 * @param atraktivnost
 	 */
-	public void dodajSnagu(SwotStrat snaga, int atraktivnost){
+	public void dodajSnagu(SwotStrat snaga, double atraktivnost){
 		SwotStrat s = new SwotStrat(snaga.getNaziv(), snaga.getPonder(), atraktivnost);
 		snage.add(s);
 	}
@@ -104,7 +104,7 @@ public class Strategija implements Serializable{
 	 * @param slabost
 	 * @param atraktivnost
 	 */
-	public void dodajSlabost(SwotStrat slabost, int atraktivnost){
+	public void dodajSlabost(SwotStrat slabost, double atraktivnost){
 		SwotStrat s = new SwotStrat(slabost.getNaziv(), slabost.getPonder(), atraktivnost);
 		slabosti.add(s);
 	}
@@ -113,7 +113,7 @@ public class Strategija implements Serializable{
 	 * @param sansa
 	 * @param atraktivnost
 	 */
-	public void dodajSansu(SwotStrat sansa, int atraktivnost){
+	public void dodajSansu(SwotStrat sansa, double atraktivnost){
 		SwotStrat s = new SwotStrat(sansa.getNaziv(), sansa.getPonder(), atraktivnost);
 		sanse.add(s);
 	}
@@ -122,7 +122,7 @@ public class Strategija implements Serializable{
 	 * @param pretnja
 	 * @param atraktivnost
 	 */
-	public void dodajPretnju(SwotStrat pretnja, int atraktivnost){
+	public void dodajPretnju(SwotStrat pretnja, double atraktivnost){
 		SwotStrat s = new SwotStrat(pretnja.getNaziv(), pretnja.getPonder(), atraktivnost);
 		pretnje.add(s);
 	}

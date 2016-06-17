@@ -338,7 +338,7 @@ public class GUIStrategija extends JFrame {
 								"Niste odabrali atraktivnost za odredjenu snagu", "Greska",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						int atraktivnost = Integer.parseInt((String) comboAtraktivnostSnage.getSelectedItem());
+						double atraktivnost = Double.parseDouble((String) comboAtraktivnostSnage.getSelectedItem());
 						SwotStrat pomocna = new SwotStrat(naziv, ponder, atraktivnost);
 						novaStrategija.dodajSnagu(pomocna, atraktivnost);
 						comboSnage.setSelectedItem("Snage");
@@ -378,7 +378,7 @@ public class GUIStrategija extends JFrame {
 								"Niste odabrali atraktivnost za odredjenu slabost", "Greska",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						int atraktivnost = Integer.parseInt((String) comboAtraktivnostSlabosti.getSelectedItem());
+						double atraktivnost = Double.parseDouble((String) comboAtraktivnostSlabosti.getSelectedItem());
 						SwotStrat pomocna = new SwotStrat(naziv, ponder, atraktivnost);
 						novaStrategija.dodajSlabost(pomocna, atraktivnost);
 						comboSlabosti.setSelectedItem("Slabosti");
@@ -418,7 +418,7 @@ public class GUIStrategija extends JFrame {
 								"Niste odabrali atraktivnost za odredjenu sansu", "Greska",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						int atraktivnost = Integer.parseInt((String) comboAtraktivnostSanse.getSelectedItem());
+						double atraktivnost = Double.parseDouble((String) comboAtraktivnostSanse.getSelectedItem());
 						SwotStrat pomocna = new SwotStrat(naziv, ponder, atraktivnost);
 						novaStrategija.dodajSansu(pomocna, atraktivnost);
 						comboSanse.setSelectedItem("Sanse");
@@ -458,7 +458,7 @@ public class GUIStrategija extends JFrame {
 								"Niste odabrali atraktivnost za odredjenu pretnju", "Greska",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						int atraktivnost = Integer.parseInt((String) comboAtraktivnostPretnje.getSelectedItem());
+						double atraktivnost = Double.parseDouble((String) comboAtraktivnostPretnje.getSelectedItem());
 						SwotStrat pomocna = new SwotStrat(naziv, ponder, atraktivnost);
 						novaStrategija.dodajPretnju(pomocna, atraktivnost);
 						comboPretnje.setSelectedItem("Pretnje");

@@ -49,7 +49,7 @@ public class Server extends SocketCommunicator implements Runnable {
 		// ako je serveru stigla poruka JOIN
 		{
 			PlayerProxy pp = new PlayerProxy(this, receivePacket.getAddress(), receivePacket.getPort());
-			clientID++;
+			
 			connectedPlayers.put(clientID, pp);
 			//posalji listu strategija
 			pp.send(KomunikacijaSaKlijentima.prebaciPodatkeUString(strategije));
@@ -57,6 +57,7 @@ public class Server extends SocketCommunicator implements Runnable {
 		} else {
 			//metoda za prikupljanje podataka
 			KomunikacijaSaKlijentima.prebaciPodatkeUListu(message, strategije);
+			clientID++;
 		}
 	}
 	

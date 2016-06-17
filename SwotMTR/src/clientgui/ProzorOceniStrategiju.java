@@ -235,7 +235,7 @@ public class ProzorOceniStrategiju extends JFrame {
 								"Niste odabrali atraktivnost za odredjenu snagu", "Greska",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						int atraktivnost = Integer.parseInt((String) comboAtraktivnostSnage.getSelectedItem());
+						double atraktivnost = Double.parseDouble((String) comboAtraktivnostSnage.getSelectedItem());
 						
 						Kontroler.oceniSnagu(rb, naziv, atraktivnost);
 						comboSnage.setSelectedItem("Snage");
@@ -270,7 +270,7 @@ public class ProzorOceniStrategiju extends JFrame {
 								"Niste odabrali atraktivnost za odredjenu slabost", "Greska",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						int atraktivnost = Integer.parseInt((String) comboAtraktivnostSlabosti.getSelectedItem());
+						double atraktivnost = Double.parseDouble((String) comboAtraktivnostSlabosti.getSelectedItem());
 						Kontroler.oceniSlabost(rb, naziv, atraktivnost);
 						comboSlabosti.setSelectedItem("Slabosti");
 						comboAtraktivnostSlabosti.setSelectedItem("");
@@ -304,7 +304,7 @@ public class ProzorOceniStrategiju extends JFrame {
 								"Niste odabrali atraktivnost za odredjenu sansu", "Greska",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						int atraktivnost = Integer.parseInt((String) comboAtraktivnostSanse.getSelectedItem());
+						double atraktivnost = Double.parseDouble((String) comboAtraktivnostSanse.getSelectedItem());
 						Kontroler.oceniSansu(rb, naziv, atraktivnost);
 						comboSanse.setSelectedItem("Sanse");
 						comboAtraktivnostSanse.setSelectedItem("");
@@ -338,7 +338,7 @@ public class ProzorOceniStrategiju extends JFrame {
 								"Niste odabrali atraktivnost za odredjenu pretnju", "Greska",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						int atraktivnost = Integer.parseInt((String) comboAtraktivnostPretnje.getSelectedItem());
+						double atraktivnost = Double.parseDouble((String) comboAtraktivnostPretnje.getSelectedItem());
 
 						Kontroler.oceniPretnje(rb, naziv, atraktivnost);
 						comboPretnje.setSelectedItem("Pretnje");
@@ -354,7 +354,7 @@ public class ProzorOceniStrategiju extends JFrame {
 			btnPosalji = new JButton("Posalji ");
 			btnPosalji.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Kontroler.posaljiPodatkeServeru();
+					dispose();
 				}
 			});
 		}

@@ -10,7 +10,7 @@ import java.io.Serializable;
  * sa razlicitom atraktivnoscu u okviru te strategije.
  */
 public class SwotStrat extends Swot implements Serializable{
-	private int atraktivnost;
+	private double atraktivnost;
 	private double ukupnaAtraktivnost;
 	/**
 	 * Konstruktor. Izracunava ukupnu atraktivnost kao proizvod pondera iz objekta Swot i atraktivnosti
@@ -19,7 +19,7 @@ public class SwotStrat extends Swot implements Serializable{
 	 * @param ponder
 	 * @param atraktivnost
 	 */
-	public SwotStrat(String naziv, double ponder, int atraktivnost) {
+	public SwotStrat(String naziv, double ponder, double atraktivnost) {
 		super(naziv, ponder);
 		this.atraktivnost = atraktivnost;
 		ukupnaAtraktivnost = super.getPonder() * atraktivnost;
@@ -32,15 +32,15 @@ public class SwotStrat extends Swot implements Serializable{
 	 * 
 	 * @return atraktivnost - ceo broj koji predstavlja atraktivnost swot-a u okviru strategije
 	 */
-	public int getAtraktivnost() {
+	public double getAtraktivnost() {
 		return atraktivnost;
 	}
 	/**
 	 * Menja atraktivnost prosledjenom atraktivnoscu i ponovno izracunava ukupnu atraktivnost
 	 * @param atraktivnost
 	 */
-	public void setAtraktivnost(int atraktivnost) {
-		if(atraktivnost < 0 || atraktivnost > 4)
+	public void setAtraktivnost(double atraktivnost) {
+		if(atraktivnost < 0)//nema atraktivnost veca od 4 zbog sumiranja podataka dobijenih od klijenata
 			throw new RuntimeException("atraktivnost je van granica");
 		this.atraktivnost = atraktivnost;
 		ukupnaAtraktivnost = super.getPonder() * atraktivnost;

@@ -33,6 +33,7 @@ public class ClientGUI extends JFrame {
 	private JMenuItem mntmPoveziSeNa;
 	private JScrollPane scrollPane;
 	private JTable table;
+	private JMenuItem mntmPosaljiPodatke;
 	//private JDialog poveziSeNaServerProzor;
 	/**
 	 * Create the frame.
@@ -66,6 +67,7 @@ public class ClientGUI extends JFrame {
 		if (mnFile == null) {
 			mnFile = new JMenu("File");
 			mnFile.add(getMntmPoveziSeNa());
+			mnFile.add(getMntmPosaljiPodatke());
 		}
 		return mnFile;
 	}
@@ -128,5 +130,17 @@ public class ClientGUI extends JFrame {
 	public void osveziTabelu(ArrayList<Strategija> listaStrategija) {
 		ClientTableModel model = (ClientTableModel) table.getModel();
 		model.osveziTabelu(listaStrategija);
+	}
+	private JMenuItem getMntmPosaljiPodatke() {
+		if (mntmPosaljiPodatke == null) {
+			mntmPosaljiPodatke = new JMenuItem("Posalji podatke");
+			mntmPosaljiPodatke.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Kontroler.posaljiPodatkeServeru();
+					dispose();
+				}
+			});
+		}
+		return mntmPosaljiPodatke;
 	}
 }
