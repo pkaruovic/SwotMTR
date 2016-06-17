@@ -406,6 +406,7 @@ public class Kontroler {
 			client.send("CaoPoyy");
 			
 			String primljeno = client.receive();
+			
 			popuniListePodataka(primljeno);
 			return true;
 		} catch (Exception e) {
@@ -493,6 +494,7 @@ public class Kontroler {
 			for (SwotStrat swotStrat : swot) {
 				povratna += swotStrat.getAtraktivnost()+" ";
 			}
+			povratna += "\n";
 		}
 		return povratna;
 	}

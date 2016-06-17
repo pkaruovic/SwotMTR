@@ -12,7 +12,7 @@ public class KomunikacijaSaKlijentima {
 	public static void prebaciPodatkeUListu(String poruka, List<Strategija> lista){
 		if(poruka == null || poruka.isEmpty())
 			return;
-		
+		System.out.println(poruka);
 		String[] vrednosti = poruka.split("\n");
 		String[] brojevi;
 		
@@ -29,16 +29,16 @@ public class KomunikacijaSaKlijentima {
 			int sans = sanse.size();
 			int prs = pretnje.size();
 			for(; j<sns; j++){
-				snage.get(j).setAtraktivnost(snage.get(j).getAtraktivnost() + Integer.parseInt(brojevi[j]));
+				snage.get(j).setAtraktivnost(snage.get(j).getAtraktivnost() + Double.parseDouble(brojevi[j]));
 			}
 			for(; j<sns+sls; j++){
-				slabosti.get(j-sns).setAtraktivnost(slabosti.get(j-sns).getAtraktivnost() + Integer.parseInt(brojevi[j-sns]));
+				slabosti.get(j-sns).setAtraktivnost(slabosti.get(j-sns).getAtraktivnost() + Double.parseDouble(brojevi[j-sns]));
 			}
 			for(; j<sns+sls+sans; j++){
-				sanse.get(j-sns-sls).setAtraktivnost(sanse.get(j-sns-sans).getAtraktivnost() + Integer.parseInt(brojevi[j-sns-sans]));
+				sanse.get(j-sns-sls).setAtraktivnost(sanse.get(j-sns-sans).getAtraktivnost() + Double.parseDouble(brojevi[j-sns-sans]));
 			}
 			for(; j<sns+sls+sans+prs; j++){
-				pretnje.get(j-sns-sls-sans).setAtraktivnost(pretnje.get(j-sns-sls-sans).getAtraktivnost() + Integer.parseInt(brojevi[j-sns-sls-sans]));
+				pretnje.get(j-sns-sls-sans).setAtraktivnost(pretnje.get(j-sns-sls-sans).getAtraktivnost() + Double.parseDouble(brojevi[j-sns-sls-sans]));
 			}
 		}
 	}
