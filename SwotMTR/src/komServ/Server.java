@@ -68,6 +68,7 @@ public class Server extends SocketCommunicator implements Runnable {
 	public void ugasiNit(){
 		KomunikacijaSaKlijentima.sumirajPodatke(strategije, clientID);
 		serverThread.interrupt();
+		datagramSocket.close();
 		System.out.println("Server je ugasen...");
 	}
 }
