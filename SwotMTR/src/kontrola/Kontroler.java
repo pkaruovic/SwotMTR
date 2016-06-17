@@ -65,6 +65,7 @@ public class Kontroler {
 	public static PocetniProzor pocetni;
 	public static ClientGUI clientFrame;
 	public static Server server;
+	private static double[] brojaci = new double[2];
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -139,6 +140,7 @@ public class Kontroler {
 			try(ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(nazivFajla)))){
 				logika = (Logika) in.readObject();//mora posebno?
 				//popuni sve tabele itd
+				azurirajPondereDeserijalizacija();
 				popuniTabeluSnage();
 				popuniTabeluPretnje();
 				popuniTabeluSanse();
@@ -653,4 +655,38 @@ public class Kontroler {
 		}
 		
 	}
+	public static void azurirajBrojacSnageSlabosti(double ponder){
+		if(brojaci[0] + ponder > 1)
+			throw new RuntimeException("Zbir pondera je veci od 1");
+		
+		brojaci[0]+=ponder;
+	}
+	
+	
+	public static void azurirajBrojacSansePretnje(double ponder){
+		if(brojaci[1] + ponder > 1)
+			throw new RuntimeException("Zbir pondera je veci od 1");
+		
+		brojaci[1]+=ponder;
+	}
+	
+	public static void azurirajPondereDeserijalizacija(){
+		brojaci[0] = 0;
+		brojaci[1] = 0;
+		
+		for(Swot s : logika.getListaSnage()){
+			brojaci[0]+=s.getPonder();
+		}
+		for(Swot s : logika.getListaSlabosti()){
+			brojaci[0]+=s.getPonder();
+		}
+		for(Swot s : logika.getListaSanse()){
+			brojaci[1]+=s.getPonder();
+		}
+		for(Swot s : logika.getListaPretnje()){
+			brojaci[1]+=s.getPonder();
+		}
+	}
+
+
 }

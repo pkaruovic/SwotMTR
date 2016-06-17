@@ -170,26 +170,31 @@ public class ProzorNoviSwot extends JFrame {
 	private JButton getBtnSacuvaj() {
 		if (btnSacuvaj == null) {
 			btnSacuvaj = new JButton("Sacuvaj");
-			
+
 			btnSacuvaj.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						Swot s = new Swot(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						if (rdbtnSnaga.isSelected() && !Kontroler.getListaSnage().contains(s)) {
+							Kontroler.azurirajBrojacSnageSlabosti(Double.parseDouble(txtPonder.getText()));
 							Kontroler.dodajSnagu(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						} else if (rdbtnSlabost.isSelected() && !Kontroler.getListaSlabosti().contains(s)) {
+							Kontroler.azurirajBrojacSnageSlabosti(Double.parseDouble(txtPonder.getText()));
 							Kontroler.dodajSlabost(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						} else if (rdbtnSansa.isSelected() && !Kontroler.getListaSanse().contains(s)) {
+							Kontroler.azurirajBrojacSansePretnje(Double.parseDouble(txtPonder.getText()));
 							Kontroler.dodajSansu(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						} else if (rdbtnPretnja.isSelected() && !Kontroler.getListaPretnje().contains(s)) {
+							Kontroler.azurirajBrojacSansePretnje(Double.parseDouble(txtPonder.getText()));
 							Kontroler.dodajPretnju(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						} else {
 							JOptionPane.showMessageDialog(rootPane, "Nepravilno ste popunili formu.", "Greska",
 									JOptionPane.ERROR_MESSAGE, null);
 						}
 					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(rootPane, "Nepravilno ste popunili formu.", "Greska",
-								JOptionPane.ERROR_MESSAGE, null);
+						JOptionPane.showMessageDialog(rootPane,
+								"Nepravilno ste popunili naziv swot-a ili je doslo je do prekoracenja zbira pondera",
+								"Greska", JOptionPane.ERROR_MESSAGE, null);
 					}
 				}
 			});
