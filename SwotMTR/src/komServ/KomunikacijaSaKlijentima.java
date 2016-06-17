@@ -76,7 +76,7 @@ public class KomunikacijaSaKlijentima {
 			}
 			
 			if(s.getPretnje().isEmpty())
-				str += "nema\t";
+				str += "nema\n";
 			else{
 				for(SwotStrat swot : s.getPretnje()){
 					str = str + swot.getNaziv() + " " + swot.getPonder() + " ";

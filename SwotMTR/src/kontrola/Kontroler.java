@@ -430,26 +430,26 @@ public class Kontroler {
 			
 			//proveravamo da li nema snaga u strategiji, isto ce biti i za ostale swotove
 			if(!podaciJednaStrategija[1].equals("nema")){
-				for(int i = 0 ; i < snage.length ; i = i + 2){
+				for(int i = 0 ; i < snage.length; i = i + 2){
 					nova.dodajSnaguBezAtraktivnosti(snage[i],Double.parseDouble(snage[i+1]));
 				}
 			}
 			//dodavanje slabosti
 			if(!podaciJednaStrategija[2].equals("nema")){
-				for(int i = 0 ; i < slabosti.length ; i = i + 2){
+				for(int i = 0 ; i < slabosti.length; i = i + 2){
 					nova.dodajSlabostBezAtraktivnosti(slabosti[i],Double.parseDouble(slabosti[i+1]));
 				}
 			}
 			//dodavanje sansi
 			if(!podaciJednaStrategija[3].equals("nema")){
-				for(int i = 0 ; i < sanse.length ; i = i + 2){
+				for(int i = 0 ; i < sanse.length; i = i + 2){
 					nova.dodajSansuBezAtraktivnosti(sanse[i],Double.parseDouble(sanse[i+1]));
 				}
 			}
 			
 			//dodavanje pretnji
 			if(!podaciJednaStrategija[4].equals("nema")){
-				for(int i = 0 ; i < pretnje.length ; i = i + 2){
+				for(int i = 0 ; i < pretnje.length; i = i + 2){
 					nova.dodajPretnjuBezAtraktivnosti(pretnje[i],Double.parseDouble(pretnje[i+1]));
 				}
 			}

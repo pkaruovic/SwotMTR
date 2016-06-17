@@ -49,7 +49,7 @@ public class ProzorOceniStrategiju extends JFrame {
 		this.strategija = strategija;
 		this.rb = rb;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 239);
+		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -81,13 +81,14 @@ public class ProzorOceniStrategiju extends JFrame {
 		if (comboSnage == null) {
 			comboSnage = new JComboBox();
 			comboSnage.setName("");
-			comboSnage.setVisible(false);
+			
 			comboSnage.setToolTipText("");
 			comboSnage.setPreferredSize(new Dimension(300, 40));
 			comboSnage.addItem("Snage");
 			for (int i = 0; i < strategija.getSnage().size(); i++) {
 				comboSnage.addItem(strategija.getSnage().get(i).getNaziv());
 			}
+			comboSnage.setVisible(true);
 		}
 		return comboSnage;
 	}
