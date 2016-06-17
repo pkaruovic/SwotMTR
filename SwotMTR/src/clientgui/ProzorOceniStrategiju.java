@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -42,13 +45,16 @@ public class ProzorOceniStrategiju extends JFrame {
 	private JButton btnDodajSlabost;
 	private JButton btnDodajSansu;
 	private int rb;//mnogo olaksava, nema pretrage strategije kada treba ubaciti atraktivnost
+	private JButton btnPosalji;
+	private JButton btnOdustani;
 	/**
 	 * Create the frame.
 	 */
 	public ProzorOceniStrategiju(Strategija strategija, int rb) {
+		
 		this.strategija = strategija;
 		this.rb = rb;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -73,6 +79,8 @@ public class ProzorOceniStrategiju extends JFrame {
 			panel.add(getComboPretnje());
 			panel.add(getComboAtraktivnostPretnje());
 			panel.add(getBtnDodajPretnju());
+			panel.add(getBtnPosalji());
+			panel.add(getBtnOdustani());
 		}
 		return panel;
 	}
@@ -340,5 +348,27 @@ public class ProzorOceniStrategiju extends JFrame {
 			});
 		}
 		return btnDodajPretnju;
+	}
+	private JButton getBtnPosalji() {
+		if (btnPosalji == null) {
+			btnPosalji = new JButton("Posalji ");
+			btnPosalji.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Kontroler.posaljiPodatkeServeru();
+				}
+			});
+		}
+		return btnPosalji;
+	}
+	private JButton getBtnOdustani() {
+		if (btnOdustani == null) {
+			btnOdustani = new JButton("Odustani");
+			btnOdustani.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					dispose();
+				}
+			});
+		}
+		return btnOdustani;
 	}
 }

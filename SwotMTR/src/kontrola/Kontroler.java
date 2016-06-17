@@ -644,4 +644,13 @@ public class Kontroler {
 		}
 		
 	}
+	public static void ugasiAplikacijuKlijent() {
+		
+		if(JOptionPane.showConfirmDialog(clientFrame,"Da li ste sigurni da zelite da ugasite aplikaciju?", 
+				"Izlaz" , 
+				JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
+			System.exit(0);
+		}
+		
+	}
 }

@@ -38,19 +38,14 @@ public class ClientGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public ClientGUI() {
-//		addWindowListener(new WindowAdapter() {
-//
-//			@Override
-//			public void windowClosing(WindowEvent arg0) {
-//				/**
-//				 * Metoda koja poziva prozor za gasenje aplikacije.
-//				 * 
-//				 * @see kontrola.Kontroler#ugasiAplikaciju()
-//				 */
-//				Kontroler.ugasiAplikaciju();
-//			}
-//		});
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				Kontroler.ugasiAplikacijuKlijent();
+			}
+		});
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setJMenuBar(getMenuBar_1());
 		contentPane = new JPanel();
