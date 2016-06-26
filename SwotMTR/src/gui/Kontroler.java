@@ -1,4 +1,4 @@
-package kontrola;
+package gui;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -41,10 +41,6 @@ import clientgui.ClientGUI;
 import clientgui.PocetniProzor;
 import clientgui.ProzorOceniStrategiju;
 import communication.Client;
-import gui.GUIDodajSWOT;
-import gui.GUIUporediStrategije;
-import gui.GlavniProzor;
-import gui.ProzorNoviSwot;
 import komServ.Server;
 import logika.Logika;
 import logika.Strategija;
@@ -61,12 +57,13 @@ public class Kontroler {
 	
 	private static GlavniProzor frame;
 	private static Logika logika;
+	private static double[] brojaci = new double[2];
+	private static boolean povezan;
 	public static Client client;
 	public static PocetniProzor pocetni;
 	public static ClientGUI clientFrame;
 	public static Server server;
-	private static double[] brojaci = new double[2];
-
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -74,14 +71,7 @@ public class Kontroler {
 					logika = new Logika();
 					pocetni = new PocetniProzor();
 					pocetni.setVisible(true);
-//					clientFrame = new ClientGUI();
-//					clientFrame.setVisible(true);
-//					frame = new GlavniProzor();
-//
-//					frame.setVisible(true);
-					
-//					Kontroler.poveziSeNaServer("192.168.8.103");
-
+					pocetni.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -95,21 +85,15 @@ public class Kontroler {
 	 * @param nazivFajla - naziv fajla koji se kreira na disku, korisnik ga unosi sam
 	 */
 	public static void serijalizuj(){
-//		String naziv;
 		JFileChooser jfcSave = new JFileChooser();
-	//	jfcSave.setCurrentDirectory(new File(".\\saved"));
 		jfcSave.setCurrentDirectory(new File(System.getProperty("user.home")));
 		jfcSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		//jfcSave.showSaveDialog(null);
 		int povratnaVrednost = jfcSave.showSaveDialog(frame.getContentPane());
 		
 		if (povratnaVrednost == JFileChooser.APPROVE_OPTION) {
 			
-//			String kosaCrta = System.getProperty("file.separator");
 			String path = jfcSave.getSelectedFile().getAbsolutePath();
-//			File file = new File(path+kosaCrta+nazivFajla);
 			File file = new File(path);
-		//	String absPathFajla = file.getAbsolutePath();
 
 			try(ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
 				out.writeObject(logika);
@@ -123,7 +107,7 @@ public class Kontroler {
 			}
 
 			JOptionPane.showMessageDialog(frame.getContentPane(), "Uspesno ste sacuvali fajl!", "Poruka",
-					JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 	}
@@ -147,7 +131,8 @@ public class Kontroler {
 				popuniTabeluSlabosti();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(frame.getContentPane(), "Doslo je do greske prilikom ucitavanja", "Poruka",
+						JOptionPane.ERROR_MESSAGE);
 			} 
 			
 		}
@@ -360,6 +345,7 @@ public class Kontroler {
 		final JDialog poveziSeNaServerProzor;
 		poveziSeNaServerProzor = new JDialog(clientFrame, "Povezivanje", true);
 		poveziSeNaServerProzor.setBounds(150, 150, 300, 75);
+		poveziSeNaServerProzor.setLocationRelativeTo(null);
 		
 		JPanel contentPane = new JPanel(new FlowLayout());
 		final JTextField adresa = new JTextField();
@@ -378,7 +364,7 @@ public class Kontroler {
 						"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 				Matcher matcher = regex.matcher(ip);
 				if(matcher.matches()){
-					if(poveziSeNaServer(adresa.getText())){
+					if(povezan = poveziSeNaServer(adresa.getText())){
 						JOptionPane.showMessageDialog(poveziSeNaServerProzor, "Uspesno povezivanje!", "Povezano!", JOptionPane.INFORMATION_MESSAGE);
 						poveziSeNaServerProzor.dispose();
 					}else{
@@ -466,6 +452,7 @@ public class Kontroler {
 	public static boolean posaljiPodatkeServeru(){
 		try {
 			client.send(vratiStringSaPodacima());
+			JOptionPane.showMessageDialog(clientFrame.getContentPane(), "Hvala na saradnji!", "Poruka", JOptionPane.INFORMATION_MESSAGE);
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -501,12 +488,14 @@ public class Kontroler {
 	public static void otvoriKlijentProzor() {
 		clientFrame = new ClientGUI();
 		clientFrame.setVisible(true);
+		clientFrame.setLocationRelativeTo(null);
 		pocetni.dispose();
 		
 	}
 	public static void otvoriServerProzor() {
 		frame = new GlavniProzor();
 		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 		pocetni.dispose();
 		
 	}
@@ -613,7 +602,7 @@ public class Kontroler {
 	}
 	public static void oceniStrategiju(int selectedRow) {
 		ProzorOceniStrategiju prozor = new ProzorOceniStrategiju(logika.getStrategije().get(selectedRow), selectedRow);
-		
+		prozor.setLocationRelativeTo(null);
 	}
 	//pisao u 4 ujutru, ne znam zasto iz guia ne dodajem atraktivnost direktno u snagu, 
 	//izbegavam semanticke vratolomije xexe, iako mozak ne radi, nadam se da aplikacija hoce
@@ -654,7 +643,7 @@ public class Kontroler {
 		
 		if(JOptionPane.showConfirmDialog(clientFrame,"Da li ste sigurni da zelite da ugasite aplikaciju?", 
 				"Izlaz" , 
-				JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 			System.exit(0);
 		}
 		
@@ -690,6 +679,22 @@ public class Kontroler {
 		for(Swot s : logika.getListaPretnje()){
 			brojaci[1]+=s.getPonder();
 		}
+	}
+	
+	public static void napraviTows(){
+		TOWS t = new TOWS(getListaSanse(), getListaPretnje(), getListaSnage(), getListaSlabosti(), getListaStrategija());
+		t.setVisible(true);
+		t.setLocationRelativeTo(null);
+	}
+	
+	public static boolean daLiJePovezan(){
+		return povezan;
+	}
+	public static void napraviProzorNovaStrat() {
+		GUIStrategija prozorNovaStrategija = new GUIStrategija();
+		prozorNovaStrategija.setVisible(true);
+		prozorNovaStrategija.setLocationRelativeTo(null);
+		
 	}
 
 

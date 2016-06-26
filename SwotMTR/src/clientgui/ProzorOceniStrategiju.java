@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import gui.GUIStrategija;
-import kontrola.Kontroler;
+import gui.Kontroler;
 import logika.Strategija;
 import logika.SwotStrat;
 
@@ -45,12 +45,12 @@ public class ProzorOceniStrategiju extends JFrame {
 	private JButton btnDodajSlabost;
 	private JButton btnDodajSansu;
 	private int rb;//mnogo olaksava, nema pretrage strategije kada treba ubaciti atraktivnost
-	private JButton btnPosalji;
 	private JButton btnOdustani;
 	/**
 	 * Create the frame.
 	 */
 	public ProzorOceniStrategiju(Strategija strategija, int rb) {
+		setTitle("Strategija");
 		
 		this.strategija = strategija;
 		this.rb = rb;
@@ -79,7 +79,6 @@ public class ProzorOceniStrategiju extends JFrame {
 			panel.add(getComboPretnje());
 			panel.add(getComboAtraktivnostPretnje());
 			panel.add(getBtnDodajPretnju());
-			panel.add(getBtnPosalji());
 			panel.add(getBtnOdustani());
 		}
 		return panel;
@@ -349,20 +348,10 @@ public class ProzorOceniStrategiju extends JFrame {
 		}
 		return btnDodajPretnju;
 	}
-	private JButton getBtnPosalji() {
-		if (btnPosalji == null) {
-			btnPosalji = new JButton("Posalji ");
-			btnPosalji.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					dispose();
-				}
-			});
-		}
-		return btnPosalji;
-	}
 	private JButton getBtnOdustani() {
 		if (btnOdustani == null) {
-			btnOdustani = new JButton("Odustani");
+			btnOdustani = new JButton("Izadji");
+			btnOdustani.setPreferredSize(new Dimension(65, 23));
 			btnOdustani.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					dispose();

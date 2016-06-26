@@ -16,7 +16,7 @@ import logika.Swot;
  */
 public class ModelTabele extends AbstractTableModel {
 	private ArrayList<Swot> podaci;
-	private String[] nazivKolone = new String[] { "Naziv", "Ponder" };
+	private String[] nazivKolone;
 
 	/**
 	 * Konstruktor koji inicijalizuje listu podataka na prosledjenu listu,
@@ -25,12 +25,13 @@ public class ModelTabele extends AbstractTableModel {
 	 * @param lista
 	 *            (lista podataka za prikaz u tabeli)
 	 */
-	public ModelTabele(ArrayList<Swot> lista) {
+	public ModelTabele(ArrayList<Swot> lista, String[] nazivKolona) {
 		if (lista == null) {
 			lista = new ArrayList<Swot>();
 		} else {
 			podaci = lista;
 		}
+		this.nazivKolone = nazivKolona;
 	}
 
 	@Override

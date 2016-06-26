@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import kontrola.Kontroler;
+import gui.Kontroler;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -33,6 +33,7 @@ public class PocetniProzor extends JFrame {
 	 * Create the frame.
 	 */
 	public PocetniProzor() {
+		setTitle("SWOTapp");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150, 50, 450, 300);
 

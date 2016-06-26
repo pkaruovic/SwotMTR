@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import kontrola.Kontroler;
+import gui.Kontroler;
 import logika.Strategija;
 import tablemodel.ClientTableModel;
 
@@ -24,21 +24,23 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JButton;
+import java.awt.Dimension;
 
 public class ClientGUI extends JFrame {
 
 	private JPanel contentPane;
-	private JMenuBar menuBar;
-	private JMenu mnFile;
-	private JMenuItem mntmPoveziSeNa;
 	private JScrollPane scrollPane;
 	private JTable table;
-	private JMenuItem mntmPosaljiPodatke;
+	private JPanel panel;
+	private JButton btnPoveziSeNa;
+	private JButton btnPosaljiPodatke;
 	//private JDialog poveziSeNaServerProzor;
 	/**
 	 * Create the frame.
 	 */
 	public ClientGUI() {
+		setTitle("Klijent");
 		addWindowListener(new WindowAdapter() {
 
 			@Override
@@ -48,42 +50,12 @@ public class ClientGUI extends JFrame {
 		});
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		setJMenuBar(getMenuBar_1());
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.add(getScrollPane(), BorderLayout.CENTER);
-	}
-
-	private JMenuBar getMenuBar_1() {
-		if (menuBar == null) {
-			menuBar = new JMenuBar();
-			menuBar.add(getMnFile());
-		}
-		return menuBar;
-	}
-	private JMenu getMnFile() {
-		if (mnFile == null) {
-			mnFile = new JMenu("File");
-			mnFile.add(getMntmPoveziSeNa());
-			mnFile.add(getMntmPosaljiPodatke());
-		}
-		return mnFile;
-	}
-	private JMenuItem getMntmPoveziSeNa() {
-		if (mntmPoveziSeNa == null) {
-			mntmPoveziSeNa = new JMenuItem("Povezi se na server");
-			mntmPoveziSeNa.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					Kontroler.prikaziProzorZaPovezivanjeNaServer();
-					osveziTabelu(Kontroler.getListaStrategija());
-				}
-
-				
-			});
-		}
-		return mntmPoveziSeNa;
+		contentPane.add(getPanel(), BorderLayout.SOUTH);
 	}
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
@@ -131,16 +103,42 @@ public class ClientGUI extends JFrame {
 		ClientTableModel model = (ClientTableModel) table.getModel();
 		model.osveziTabelu(listaStrategija);
 	}
-	private JMenuItem getMntmPosaljiPodatke() {
-		if (mntmPosaljiPodatke == null) {
-			mntmPosaljiPodatke = new JMenuItem("Posalji podatke");
-			mntmPosaljiPodatke.addActionListener(new ActionListener() {
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.add(getBtnPoveziSeNa());
+			panel.add(getBtnPosaljiPodatke());
+		}
+		return panel;
+	}
+	private JButton getBtnPoveziSeNa() {
+		if (btnPoveziSeNa == null) {
+			btnPoveziSeNa = new JButton(" Povezi se na server");
+			btnPoveziSeNa.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Kontroler.posaljiPodatkeServeru();
-					dispose();
+					Kontroler.prikaziProzorZaPovezivanjeNaServer();
+					osveziTabelu(Kontroler.getListaStrategija());
+					if(Kontroler.daLiJePovezan()){
+						btnPoveziSeNa.setVisible(false);
+						btnPosaljiPodatke.setVisible(true);
+					}
 				}
 			});
+			btnPoveziSeNa.setPreferredSize(new Dimension(160, 23));
 		}
-		return mntmPosaljiPodatke;
+		return btnPoveziSeNa;
+	}
+	private JButton getBtnPosaljiPodatke() {
+		if (btnPosaljiPodatke == null) {
+			btnPosaljiPodatke = new JButton("Posalji podatke");
+			btnPosaljiPodatke.setVisible(false);
+			btnPosaljiPodatke.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Kontroler.posaljiPodatkeServeru();
+				}
+			});
+			btnPosaljiPodatke.setPreferredSize(new Dimension(160, 23));
+		}
+		return btnPosaljiPodatke;
 	}
 }

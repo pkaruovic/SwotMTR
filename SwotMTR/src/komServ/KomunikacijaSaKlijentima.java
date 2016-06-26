@@ -9,7 +9,7 @@ import logika.SwotStrat;
 
 public class KomunikacijaSaKlijentima {
 
-	public static void prebaciPodatkeUListu(String poruka, List<Strategija> lista){
+	public static void prebaciPodatkeUListu(String poruka, List<Strategija> lista) throws Exception{
 		if(poruka == null || poruka.isEmpty())
 			return;
 		System.out.println(poruka);

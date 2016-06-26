@@ -19,7 +19,7 @@ import logika.Strategija;
  * @author POOP
  */
 public class Server extends SocketCommunicator implements Runnable {
-	private final Hashtable<Integer, PlayerProxy> connectedPlayers = new Hashtable<>();
+//	private final Hashtable<Integer, PlayerProxy> connectedPlayers = new Hashtable<>();
 	private final Thread serverThread = new Thread(this);
 	private int clientID = 1;
 	private ArrayList<Strategija> strategije;
@@ -32,16 +32,16 @@ public class Server extends SocketCommunicator implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Game server started, listening on port " + SERVER_PORT + " ...");
+		System.out.println("Server je pokrenut na portu " + SERVER_PORT + " ...");
 		while (!Thread.interrupted()) {
 			try {
 				String message = receive();
-				System.out.println("primljeno");
+				System.out.println("Primljeni su novi podaci");
 				processMessage(message);
 			} catch (IOException e) {
 			}
 		}
-		System.out.println("... game server ended.");
+		System.out.println("... server je ugasen.");
 	}
 
 	private void processMessage(String message) throws IOException {
@@ -50,13 +50,18 @@ public class Server extends SocketCommunicator implements Runnable {
 		{
 			PlayerProxy pp = new PlayerProxy(this, receivePacket.getAddress(), receivePacket.getPort());
 			
-			connectedPlayers.put(clientID, pp);
+//			connectedPlayers.put(clientID, pp);
 			//posalji listu strategija
 			pp.send(KomunikacijaSaKlijentima.prebaciPodatkeUString(strategije));
-			System.out.println("Povezani smo <3");
+			System.out.println("Povezan je novi klijent");
 		} else {
 			//metoda za prikupljanje podataka
-			KomunikacijaSaKlijentima.prebaciPodatkeUListu(message, strategije);
+			try {
+				KomunikacijaSaKlijentima.prebaciPodatkeUListu(message, strategije);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			clientID++;
 		}
 	}

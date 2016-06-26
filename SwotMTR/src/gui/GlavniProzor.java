@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import kontrola.Kontroler;
 import logika.Logika;
 import logika.Swot;
 import tablemodel.ModelTabele;
@@ -40,6 +39,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.border.TitledBorder;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 /**
  * Klasa koja predstavlja pocetni prozor aplikacije i glavnu radnu povrsinu za
@@ -75,7 +78,12 @@ public class GlavniProzor extends JFrame {
 	private JButton btnSwot;
 	private JButton btnPokreniServer;
 	private JButton btnUgasiServer;
-	private JButton btnSacuvajUPdfu;
+	private JButton btnTows;
+	private JMenuItem mntmSaveAsPdf;
+	private JPanel panel_3;
+	private JPanel panel_4;
+	private JPanel panel_5;
+	private JLabel lblT;
 	
 	public GlavniProzor() {
 		addWindowListener(new WindowAdapter() {
@@ -91,7 +99,7 @@ public class GlavniProzor extends JFrame {
 			}
 		});
 
-		setTitle("SWOT");
+		setTitle("Radna povrsina");
 
 		setPreferredSize(new Dimension(800, 600));
 
@@ -121,6 +129,7 @@ public class GlavniProzor extends JFrame {
 			mnFile.add(getMntmNew());
 			mnFile.add(getMntmOpen());
 			mnFile.add(getMntmSave());
+			mnFile.add(getMntmSaveAsPdf());
 			mnFile.add(getMntmExit());
 		}
 		return mnFile;
@@ -138,7 +147,7 @@ public class GlavniProzor extends JFrame {
 	 * Stavka menija koja poziva prozor za izbor i importovanje binarnog fajla
 	 * sa podacima o swot-ovima.
 	 * 
-	 * @see kontrola.Kontroler#deserijalizuj()
+	 * @see gui.Kontroler#deserijalizuj()
 	 * @return JMenuItem
 	 */
 	private JMenuItem getMntmOpen() {
@@ -159,7 +168,7 @@ public class GlavniProzor extends JFrame {
 	/**
 	 * Stavka menija koja poziva prozor za cuvanje podataka o swot-ovima.
 	 * 
-	 * @see kontrola.Kontroler#serijalizuj(String)
+	 * @see gui.Kontroler#serijalizuj(String)
 	 * @return JMenuItem
 	 */
 	private JMenuItem getMntmSave() {
@@ -218,11 +227,11 @@ public class GlavniProzor extends JFrame {
 	private JTable getSnage() {
 		if (Snage == null) {
 			Snage = new JTable();
-			Snage.setModel(new ModelTabele(Kontroler.getListaSnage()));
+			Snage.setModel(new ModelTabele(Kontroler.getListaSnage(), new String[]{"Naziv snage", "Ponder"}));
 			Snage.setShowGrid(true);
 			Snage.setShowVerticalLines(true);
 			Snage.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-			Snage.getColumnModel().getColumn(1).setPreferredWidth(10);
+			Snage.getColumnModel().getColumn(0).setPreferredWidth(450);
 		}
 		return Snage;
 	}
@@ -230,11 +239,11 @@ public class GlavniProzor extends JFrame {
 	private JTable getSlabosti() {
 		if (Slabosti == null) {
 			Slabosti = new JTable();
-			Slabosti.setModel(new ModelTabele(Kontroler.getListaSlabosti()));
+			Slabosti.setModel(new ModelTabele(Kontroler.getListaSlabosti(), new String[]{"Naziv slabosti", "Ponder"}));
 			Slabosti.setShowGrid(true);
 			Slabosti.setShowVerticalLines(true);
 			Slabosti.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-			Slabosti.getColumnModel().getColumn(1).setPreferredWidth(10);
+			Slabosti.getColumnModel().getColumn(0).setPreferredWidth(450);
 		}
 		return Slabosti;
 	}
@@ -242,11 +251,11 @@ public class GlavniProzor extends JFrame {
 	private JTable getSanse() {
 		if (Sanse == null) {
 			Sanse = new JTable();
-			Sanse.setModel(new ModelTabele(Kontroler.getListaSanse()));
+			Sanse.setModel(new ModelTabele(Kontroler.getListaSanse(), new String[]{"Naziv sanse", "Ponder"}));
 			Sanse.setShowGrid(true);
 			Sanse.setShowVerticalLines(true);
 			Sanse.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-			Sanse.getColumnModel().getColumn(1).setPreferredWidth(10);
+			Sanse.getColumnModel().getColumn(0).setPreferredWidth(450);
 		}
 		return Sanse;
 	}
@@ -254,10 +263,10 @@ public class GlavniProzor extends JFrame {
 	private JTable getPretnje() {
 		if (Pretnje == null) {
 			Pretnje = new JTable();
-			Pretnje.setModel(new ModelTabele(Kontroler.getListaPretnje()));
+			Pretnje.setModel(new ModelTabele(Kontroler.getListaPretnje(), new String[]{"Naziv pretnje", "Ponder"}));
 			Pretnje.setShowGrid(true);
 			Pretnje.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-			Pretnje.getColumnModel().getColumn(1).setPreferredWidth(10);
+			Pretnje.getColumnModel().getColumn(0).setPreferredWidth(450);
 		}
 		return Pretnje;
 	}
@@ -266,7 +275,7 @@ public class GlavniProzor extends JFrame {
 	 * Stavka menija koja kreira novi prozor sa informacijama o autorima i
 	 * godini izdanja.
 	 * 
-	 * @see kontrola.Kontroler#prikaziPodatkeOAutorima
+	 * @see gui.Kontroler#prikaziPodatkeOAutorima
 	 * @return jMenuItem
 	 */
 	private JMenuItem getMntmAbout() {
@@ -284,7 +293,7 @@ public class GlavniProzor extends JFrame {
 	/**
 	 * Stavka menija za ponovno pokretanje programa
 	 * 
-	 * @see kontrola.Kontroler#refresuj()
+	 * @see gui.Kontroler#refresuj()
 	 * @return JMenuItem
 	 */
 	private JMenuItem getMntmNew() {
@@ -307,13 +316,10 @@ public class GlavniProzor extends JFrame {
 		if (panel_1 == null) {
 			panel_1 = new JPanel();
 			panel_1.setPreferredSize(new Dimension(150, 10));
-			panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-			panel_1.add(getBtnSwot());
-			panel_1.add(getBtnKreirajStrategiju());
-			panel_1.add(getBtnUporediStrategije());
-			panel_1.add(getBtnPokreniServer());
-			panel_1.add(getBtnUgasiServer());
-			panel_1.add(getBtnSacuvajUPdfu());
+			panel_1.setLayout(new MigLayout("", "[108.00px,left]", "[97.00,top][177.00px,grow][98.00px,center][196.00,grow][grow,bottom]"));
+			panel_1.add(getPanel_3_1(), "cell 0 0,grow");
+			panel_1.add(getPanel_4(), "cell 0 2,growx,aligny center");
+			panel_1.add(getPanel_5(), "cell 0 4,grow");
 			// panel_1.add(getBtnDodaj());
 		}
 		return panel_1;
@@ -322,18 +328,18 @@ public class GlavniProzor extends JFrame {
 	/**
 	 * Dugme za kreiranje novog prozora za prikaz strategija
 	 * 
-	 * @see kontrola.Kontroler#napraviProzorUporediStrategije()
+	 * @see gui.Kontroler#napraviProzorUporediStrategije()
 	 * @return
 	 */
 	private JButton getBtnUporediStrategije() {
 		if (btnUporediStrategije == null) {
-			btnUporediStrategije = new JButton(" Uporedi strategije");
+			btnUporediStrategije = new JButton("Strategije");
 			btnUporediStrategije.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Kontroler.napraviProzorUporediStrategije();
 				}
 			});
-			btnUporediStrategije.setPreferredSize(new Dimension(140, 23));
+			btnUporediStrategije.setPreferredSize(new Dimension(100, 23));
 		}
 		return btnUporediStrategije;
 	}
@@ -346,14 +352,13 @@ public class GlavniProzor extends JFrame {
 	 */
 	private JButton getBtnKreirajStrategiju() {
 		if (btnKreirajStrategiju == null) {
-			btnKreirajStrategiju = new JButton(" Kreiraj strategiju");
+			btnKreirajStrategiju = new JButton("Strategiju");
 			btnKreirajStrategiju.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					GUIStrategija prozorNovaStrategija = new GUIStrategija();
-					prozorNovaStrategija.setVisible(true);
+					Kontroler.napraviProzorNovaStrat();
 				}
 			});
-			btnKreirajStrategiju.setPreferredSize(new Dimension(140, 23));
+			btnKreirajStrategiju.setPreferredSize(new Dimension(100, 23));
 		}
 		return btnKreirajStrategiju;
 	}
@@ -380,7 +385,7 @@ public class GlavniProzor extends JFrame {
 					Kontroler.napraviProzorNoviSwot();
 				}
 			});
-			btnSwot.setPreferredSize(new Dimension(140, 20));
+			btnSwot.setPreferredSize(new Dimension(100, 20));
 		}
 		return btnSwot;
 
@@ -488,7 +493,7 @@ public class GlavniProzor extends JFrame {
 					Kontroler.pokreniServer();
 				}
 			});
-			btnPokreniServer.setPreferredSize(new Dimension(140, 23));
+			btnPokreniServer.setPreferredSize(new Dimension(100, 23));
 		}
 		return btnPokreniServer;
 	}
@@ -500,20 +505,68 @@ public class GlavniProzor extends JFrame {
 					Kontroler.ugasiServer();
 				}
 			});
-			btnUgasiServer.setPreferredSize(new Dimension(140, 23));
+			btnUgasiServer.setPreferredSize(new Dimension(100, 23));
 		}
 		return btnUgasiServer;
 	}
-	private JButton getBtnSacuvajUPdfu() {
-		if (btnSacuvajUPdfu == null) {
-			btnSacuvajUPdfu = new JButton("Sacuvaj u PDF-u");
-			btnSacuvajUPdfu.addActionListener(new ActionListener() {
+	private JButton getBtnTows() {
+		if (btnTows == null) {
+			btnTows = new JButton("TOWS");
+			btnTows.setPreferredSize(new Dimension(100, 23));
+			btnTows.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					Kontroler.napraviTows();
+				}
+			});
+		}
+		return btnTows;
+	}
+	private JMenuItem getMntmSaveAsPdf() {
+		if (mntmSaveAsPdf == null) {
+			mntmSaveAsPdf = new JMenuItem("Save as PDF");
+			mntmSaveAsPdf.setIcon(new ImageIcon(GlavniProzor.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
+			mntmSaveAsPdf.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
 					Kontroler.upisiUPDF();
 				}
 			});
-			btnSacuvajUPdfu.setPreferredSize(new Dimension(140, 20));
 		}
-		return btnSacuvajUPdfu;
+		return mntmSaveAsPdf;
+	}
+	private JPanel getPanel_3_1() {
+		if (panel_3 == null) {
+			panel_3 = new JPanel();
+			panel_3.setBorder(new TitledBorder(null, "NAPRAVI", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel_3.setLayout(new MigLayout("", "[118.00px]", "[][23px][20px]"));
+			panel_3.add(getBtnSwot(), "flowy,cell 0 1,grow");
+			panel_3.add(getBtnKreirajStrategiju(), "cell 0 1,growx,aligny top");
+		}
+		return panel_3;
+	}
+	private JPanel getPanel_4() {
+		if (panel_4 == null) {
+			panel_4 = new JPanel();
+			panel_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "PRIKAZI", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			panel_4.setLayout(new MigLayout("", "[120.00,fill]", "[grow][fill][fill][grow]"));
+			panel_4.add(getBtnUporediStrategije(), "cell 0 1,growx,aligny center");
+			panel_4.add(getBtnTows(), "cell 0 2,growx,aligny center");
+		}
+		return panel_4;
+	}
+	private JPanel getPanel_5() {
+		if (panel_5 == null) {
+			panel_5 = new JPanel();
+			panel_5.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "KLIJENT-SERVER", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			panel_5.setLayout(new MigLayout("", "[]", "[][][][]"));
+			panel_5.add(getBtnPokreniServer(), "flowy,cell 0 1,growx,aligny center");
+			panel_5.add(getBtnUgasiServer(), "cell 0 2,growx,aligny center");
+		}
+		return panel_5;
+	}
+	private JLabel getLblT() {
+		if (lblT == null) {
+			lblT = new JLabel("T");
+		}
+		return lblT;
 	}
 }
