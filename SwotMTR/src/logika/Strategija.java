@@ -1,5 +1,6 @@
 package logika;
 
+import java.io.LineNumberInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -209,5 +210,17 @@ public class Strategija implements Serializable{
 			s+= snage.get(i).getNaziv() + "-" + snage.get(i).getPonder() + ";";
 		}
 		return s;
+	}
+	public int vratiBrojSnaga(){
+		return snage.size();
+	}
+	public int vratiBrojSlabosti(){
+		return slabosti.size();
+	}
+	public int vratiBrojSansi(){
+		return sanse.size();
+	}
+	public int vratiBrojPretnji(){
+		return pretnje.size();
 	}
 }

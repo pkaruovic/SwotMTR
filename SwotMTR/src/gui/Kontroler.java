@@ -332,6 +332,8 @@ public class Kontroler {
 					brojaci[1] = 0;
 					logika = new Logika();
 					frame = new GlavniProzor();
+					frame.setLocationRelativeTo(null);
+					ugasiServer();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(frame, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
@@ -696,6 +698,26 @@ public class Kontroler {
 		prozorNovaStrategija.setLocationRelativeTo(null);
 		
 	}
-
+	public static void smanjiBrojNeocenjenihStrategija(){
+		clientFrame.smanjiBrojNeocenjenihStrategija();
+	}
+	public static void refresujKlijent() {
+		
+		clientFrame.dispose();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					logika = new Logika();
+					clientFrame = new ClientGUI();
+					clientFrame.setLocationRelativeTo(null);
+					clientFrame.setVisible(true);
+					client = null;
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(clientFrame, e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+	}
 
 }

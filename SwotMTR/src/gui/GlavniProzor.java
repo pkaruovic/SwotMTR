@@ -99,7 +99,7 @@ public class GlavniProzor extends JFrame {
 			}
 		});
 
-		setTitle("Radna povrsina");
+		setTitle("Server");
 
 		setPreferredSize(new Dimension(800, 600));
 

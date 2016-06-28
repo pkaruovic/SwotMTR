@@ -518,7 +518,9 @@ public class GUIStrategija extends JFrame {
 			buttonOtkazi = new JButton("Otkazi");
 			buttonOtkazi.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					dispose();
+					int izadji = JOptionPane.showConfirmDialog(contentPane, "Da li ste sigurni da zelite da izadjete?", "Poruka", JOptionPane.YES_NO_OPTION);
+					if(izadji == JOptionPane.YES_OPTION)
+						dispose();
 				}
 			});
 		}

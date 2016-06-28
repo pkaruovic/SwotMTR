@@ -35,7 +35,7 @@ public class KomunikacijaSaKlijentima {
 				slabosti.get(j-sns).setAtraktivnost(slabosti.get(j-sns).getAtraktivnost() + Double.parseDouble(brojevi[j-sns]));
 			}
 			for(; j<sns+sls+sans; j++){
-				sanse.get(j-sns-sls).setAtraktivnost(sanse.get(j-sns-sans).getAtraktivnost() + Double.parseDouble(brojevi[j-sns-sans]));
+				sanse.get(j-sns-sls).setAtraktivnost(sanse.get(j-sns-sls).getAtraktivnost() + Double.parseDouble(brojevi[j-sns-sls]));
 			}
 			for(; j<sns+sls+sans+prs; j++){
 				pretnje.get(j-sns-sls-sans).setAtraktivnost(pretnje.get(j-sns-sls-sans).getAtraktivnost() + Double.parseDouble(brojevi[j-sns-sls-sans]));

@@ -45,16 +45,39 @@ public class ProzorOceniStrategiju extends JFrame {
 	private JButton btnDodajSlabost;
 	private JButton btnDodajSansu;
 	private int rb;//mnogo olaksava, nema pretrage strategije kada treba ubaciti atraktivnost
-	private JButton btnOdustani;
+	private JButton btnIzadji;
+	private int brojSnaga;
+	private int brojSlabosti;
+	private int brojSansi;
+	private int brojPretnji;
 	/**
 	 * Create the frame.
 	 */
 	public ProzorOceniStrategiju(Strategija strategija, int rb) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				if(brojSnaga > 0)
+					JOptionPane.showMessageDialog(null, "Niste ocenili sve snage!");
+				else if(brojSlabosti > 0)
+					JOptionPane.showMessageDialog(null, "Niste ocenili sve slabosti!");
+				else if(brojSansi > 0)
+					JOptionPane.showMessageDialog(null, "Niste ocenili sve sanse!");
+				else if(brojPretnji > 0)
+					JOptionPane.showMessageDialog(null, "Niste ocenili sve pretnje!");
+				else{
+					Kontroler.smanjiBrojNeocenjenihStrategija();
+				
+					dispose();
+				}
+			}
+		});
 		setTitle("Strategija");
 		
 		this.strategija = strategija;
+		izbrojiSWOT();
 		this.rb = rb;
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,6 +85,14 @@ public class ProzorOceniStrategiju extends JFrame {
 		contentPane.add(getPanel(), BorderLayout.CENTER);
 		setContentPane(contentPane);
 		setVisible(true);
+	}
+
+	private void izbrojiSWOT() {
+		brojSnaga = strategija.vratiBrojSnaga();
+		brojSlabosti = strategija.vratiBrojSlabosti();
+		brojSansi = strategija.vratiBrojSansi();
+		brojPretnji = strategija.vratiBrojPretnji();
+		
 	}
 
 	private JPanel getPanel() {
@@ -79,7 +110,7 @@ public class ProzorOceniStrategiju extends JFrame {
 			panel.add(getComboPretnje());
 			panel.add(getComboAtraktivnostPretnje());
 			panel.add(getBtnDodajPretnju());
-			panel.add(getBtnOdustani());
+			panel.add(getBtnIzadji());
 		}
 		return panel;
 	}
@@ -239,6 +270,7 @@ public class ProzorOceniStrategiju extends JFrame {
 						Kontroler.oceniSnagu(rb, naziv, atraktivnost);
 						comboSnage.setSelectedItem("Snage");
 						comboAtraktivnostSnage.setSelectedItem("");
+						brojSnaga--;
 					}
 				}
 			});
@@ -273,6 +305,7 @@ public class ProzorOceniStrategiju extends JFrame {
 						Kontroler.oceniSlabost(rb, naziv, atraktivnost);
 						comboSlabosti.setSelectedItem("Slabosti");
 						comboAtraktivnostSlabosti.setSelectedItem("");
+						brojSlabosti--;
 					}
 				}
 			});
@@ -307,6 +340,7 @@ public class ProzorOceniStrategiju extends JFrame {
 						Kontroler.oceniSansu(rb, naziv, atraktivnost);
 						comboSanse.setSelectedItem("Sanse");
 						comboAtraktivnostSanse.setSelectedItem("");
+						brojSansi--;
 					}
 				}
 			});
@@ -342,22 +376,36 @@ public class ProzorOceniStrategiju extends JFrame {
 						Kontroler.oceniPretnje(rb, naziv, atraktivnost);
 						comboPretnje.setSelectedItem("Pretnje");
 						comboAtraktivnostPretnje.setSelectedItem("");
+						brojPretnji--;
 					}
 				}
 			});
 		}
 		return btnDodajPretnju;
 	}
-	private JButton getBtnOdustani() {
-		if (btnOdustani == null) {
-			btnOdustani = new JButton("Izadji");
-			btnOdustani.setPreferredSize(new Dimension(65, 23));
-			btnOdustani.addActionListener(new ActionListener() {
+	private JButton getBtnIzadji() {
+		if (btnIzadji == null) {
+			btnIzadji = new JButton("Izadji");
+			btnIzadji.setPreferredSize(new Dimension(65, 23));
+			btnIzadji.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					dispose();
+					if(brojSnaga > 0)
+						JOptionPane.showMessageDialog(null, "Niste ocenili sve snage!");
+					else if(brojSlabosti > 0)
+						JOptionPane.showMessageDialog(null, "Niste ocenili sve slabosti!");
+					else if(brojSansi > 0)
+						JOptionPane.showMessageDialog(null, "Niste ocenili sve sanse!");
+					else if(brojPretnji > 0)
+						JOptionPane.showMessageDialog(null, "Niste ocenili sve pretnje!");
+					else{
+						Kontroler.smanjiBrojNeocenjenihStrategija();
+					
+						dispose();
+					}
 				}
 			});
 		}
-		return btnOdustani;
+		return btnIzadji;
 	}
+	
 }

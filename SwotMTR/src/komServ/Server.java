@@ -41,7 +41,6 @@ public class Server extends SocketCommunicator implements Runnable {
 			} catch (IOException e) {
 			}
 		}
-		System.out.println("... server je ugasen.");
 	}
 
 	private void processMessage(String message) throws IOException {
