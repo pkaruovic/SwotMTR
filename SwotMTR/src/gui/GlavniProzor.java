@@ -43,6 +43,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 /**
  * Klasa koja predstavlja pocetni prozor aplikacije i glavnu radnu povrsinu za
@@ -84,6 +85,11 @@ public class GlavniProzor extends JFrame {
 	private JPanel panel_4;
 	private JPanel panel_5;
 	private JLabel lblT;
+	private JPanel panel_2;
+	private JLabel lblNewLabel;
+	private JTextField textSnageSlabosti;
+	private JLabel lblSanseIPretnje;
+	private JTextField textSansePretnje;
 	
 	public GlavniProzor() {
 		addWindowListener(new WindowAdapter() {
@@ -112,6 +118,7 @@ public class GlavniProzor extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.add(getPanel(), BorderLayout.CENTER);
 		contentPane.add(getPanel_1(), BorderLayout.EAST);
+		contentPane.add(getPanel_2(), BorderLayout.SOUTH);
 	}
 
 	private JMenuBar getMenuBar_1() {
@@ -568,5 +575,56 @@ public class GlavniProzor extends JFrame {
 			lblT = new JLabel("T");
 		}
 		return lblT;
+	}
+	private JPanel getPanel_2() {
+		if (panel_2 == null) {
+			panel_2 = new JPanel();
+			panel_2.setLayout(new MigLayout("", "[grow][][56.00][76.00][78.00][63.00][][62.00][74px][grow]", "[14px]"));
+			panel_2.add(getLblNewLabel(), "flowy,cell 1 0,alignx center,aligny top");
+			panel_2.add(getLblSanseIPretnje(), "flowy,cell 6 0,alignx center");
+			panel_2.add(getTextSansePretnje(), "cell 6 0,alignx center");
+			panel_2.add(getTextSnageSlabosti(), "cell 1 0,alignx center");
+		}
+		return panel_2;
+	}
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("snage + slabosti");
+		}
+		return lblNewLabel;
+	}
+	private JTextField getTextSnageSlabosti() {
+		if (textSnageSlabosti == null) {
+			textSnageSlabosti = new JTextField();
+			textSnageSlabosti.setHorizontalAlignment(SwingConstants.CENTER);
+			textSnageSlabosti.setPreferredSize(new Dimension(5, 20));
+			textSnageSlabosti.setEditable(false);
+			textSnageSlabosti.setColumns(10);
+		}
+		return textSnageSlabosti;
+	}
+	private JLabel getLblSanseIPretnje() {
+		if (lblSanseIPretnje == null) {
+			lblSanseIPretnje = new JLabel("sanse + pretnje");
+		}
+		return lblSanseIPretnje;
+	}
+	private JTextField getTextSansePretnje() {
+		if (textSansePretnje == null) {
+			textSansePretnje = new JTextField();
+			textSansePretnje.setHorizontalAlignment(SwingConstants.CENTER);
+			textSansePretnje.setPreferredSize(new Dimension(5, 20));
+			textSansePretnje.setEditable(false);
+			textSansePretnje.setColumns(10);
+		}
+		return textSansePretnje;
+	}
+	
+	public void textVrednostiSumaSS(double vrednost){
+		textSnageSlabosti.setText(String.format("%.2f", vrednost));
+	}
+	
+	public void textVrednostiSumaSP(double vrednost){
+		textSansePretnje.setText(String.format("%.2f", vrednost));
 	}
 }

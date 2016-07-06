@@ -46,15 +46,17 @@ import logika.Logika;
 import logika.Strategija;
 import logika.Swot;
 import logika.SwotStrat;
+
 /**
  * 
  * @author Petar Karuovic, Miljan Jovic, Andrija Djordjevic
  * 
- * Klasa koja povezuje korisnicki interfejs i poslovnu logiku i koristi se za pokretanje aplikacije.
+ *         Klasa koja povezuje korisnicki interfejs i poslovnu logiku i koristi
+ *         se za pokretanje aplikacije.
  * 
  */
 public class Kontroler {
-	
+
 	private static GlavniProzor frame;
 	private static Logika logika;
 	private static double[] brojaci = new double[2];
@@ -63,7 +65,7 @@ public class Kontroler {
 	public static PocetniProzor pocetni;
 	public static ClientGUI clientFrame;
 	public static Server server;
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -78,24 +80,28 @@ public class Kontroler {
 			}
 		});
 	}
+
 	/**
-	 * Metoda koja cuva stanje programa (sve strategije, snage, slabosti, sanse i pretnje koje je korisnik uneo).
+	 * Metoda koja cuva stanje programa (sve strategije, snage, slabosti, sanse
+	 * i pretnje koje je korisnik uneo).
 	 * 
 	 * 
-	 * @param nazivFajla - naziv fajla koji se kreira na disku, korisnik ga unosi sam
+	 * @param nazivFajla
+	 *            - naziv fajla koji se kreira na disku, korisnik ga unosi sam
 	 */
-	public static void serijalizuj(){
+	public static void serijalizuj() {
 		JFileChooser jfcSave = new JFileChooser();
 		jfcSave.setCurrentDirectory(new File(System.getProperty("user.home")));
 		jfcSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int povratnaVrednost = jfcSave.showSaveDialog(frame.getContentPane());
-		
+
 		if (povratnaVrednost == JFileChooser.APPROVE_OPTION) {
-			
+
 			String path = jfcSave.getSelectedFile().getAbsolutePath();
 			File file = new File(path);
 
-			try(ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))){
+			try (ObjectOutputStream out = new ObjectOutputStream(
+					new BufferedOutputStream(new FileOutputStream(file)))) {
 				out.writeObject(logika);
 				out.close();
 			} catch (FileNotFoundException e) {
@@ -109,21 +115,23 @@ public class Kontroler {
 			JOptionPane.showMessageDialog(frame.getContentPane(), "Uspesno ste sacuvali fajl!", "Poruka",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-		
+
 	}
+
 	/**
 	 * Metoda koja omogucava korisniku da vrati sacuvano stanje programa.
 	 */
-	public static void deserijalizuj(){
-		
+	public static void deserijalizuj() {
+
 		JFileChooser jfcOpen = new JFileChooser();
 		jfcOpen.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int povratnaVrednost = jfcOpen.showOpenDialog(frame.getContentPane());
 		if (povratnaVrednost == JFileChooser.APPROVE_OPTION) {
 			String nazivFajla = jfcOpen.getSelectedFile().getAbsolutePath();
-			try(ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(nazivFajla)))){
-				logika = (Logika) in.readObject();//mora posebno?
-				//popuni sve tabele itd
+			try (ObjectInputStream in = new ObjectInputStream(
+					new BufferedInputStream(new FileInputStream(nazivFajla)))) {
+				logika = (Logika) in.readObject();// mora posebno?
+				// popuni sve tabele itd
 				azurirajPondereDeserijalizacija();
 				popuniTabeluSnage();
 				popuniTabeluPretnje();
@@ -131,41 +139,52 @@ public class Kontroler {
 				popuniTabeluSlabosti();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(frame.getContentPane(), "Doslo je do greske prilikom ucitavanja", "Poruka",
-						JOptionPane.ERROR_MESSAGE);
-			} 
-			
+				JOptionPane.showMessageDialog(frame.getContentPane(), "Doslo je do greske prilikom ucitavanja",
+						"Poruka", JOptionPane.ERROR_MESSAGE);
+			}
+
 		}
-		
+
 	}
+
 	/**
-	 * Proverava da li je korisnik siguran da zeli da izadje iz aplikacije, ukoliko jeste,
-	 * aplikacija prestaje sa radom.
+	 * Proverava da li je korisnik siguran da zeli da izadje iz aplikacije,
+	 * ukoliko jeste, aplikacija prestaje sa radom.
 	 */
 	public static void ugasiAplikaciju() {
-		int ugasi = JOptionPane.showConfirmDialog(frame.getContentPane(), "Da li zelite da ugasite program?", "Ugasi", JOptionPane.YES_NO_OPTION);
-		
-		if(ugasi == JOptionPane.YES_OPTION){
+		int ugasi = JOptionPane.showConfirmDialog(frame.getContentPane(), "Da li zelite da ugasite program?", "Ugasi",
+				JOptionPane.YES_NO_OPTION);
+
+		if (ugasi == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
 	}
+
 	/**
 	 * Poziva konstruktor klase Strategija i vraca objekat iste klase.
-	 * @param naziv - konstruktor unosi naziv preko grafickog korisnickog interfejsa
+	 * 
+	 * @param naziv
+	 *            - konstruktor unosi naziv preko grafickog korisnickog
+	 *            interfejsa
 	 * @return
 	 */
 	public static Strategija kreirajStrategiju(String naziv) {
 		return new Strategija(naziv);
 	}
+
 	/**
-	 * Poziva metodu za dodavanje strategije u listu 
-	 * @param strategija 
+	 * Poziva metodu za dodavanje strategije u listu
+	 * 
+	 * @param strategija
 	 */
 	public static void dodajStrategiju(Strategija strategija) {
 		logika.dodajStrategijuUListu(strategija);
 	}
+
 	/**
-	 * Poziva metodu za dodavanje snage u listu kao i metodu za naknadno popunavanje tabele snaga
+	 * Poziva metodu za dodavanje snage u listu kao i metodu za naknadno
+	 * popunavanje tabele snaga
+	 * 
 	 * @param naziv
 	 * @param ponder
 	 */
@@ -173,8 +192,11 @@ public class Kontroler {
 		logika.dodajSnaguUListu(naziv, ponder);
 		popuniTabeluSnage();
 	}
+
 	/**
-	 * Poziva metodu za dodavanje slabosti u listu kao i metodu za naknadno popunavanje tabele slabosti
+	 * Poziva metodu za dodavanje slabosti u listu kao i metodu za naknadno
+	 * popunavanje tabele slabosti
+	 * 
 	 * @param naziv
 	 * @param ponder
 	 */
@@ -182,8 +204,11 @@ public class Kontroler {
 		logika.dodajSlabostUListu(naziv, ponder);
 		popuniTabeluSlabosti();
 	}
+
 	/**
-	 * Poziva metodu za dodavanje sanse u listu kao i metodu za naknadno popunavanje tabele sansi
+	 * Poziva metodu za dodavanje sanse u listu kao i metodu za naknadno
+	 * popunavanje tabele sansi
+	 * 
 	 * @param naziv
 	 * @param ponder
 	 */
@@ -191,8 +216,11 @@ public class Kontroler {
 		logika.dodajSansuUListu(naziv, ponder);
 		popuniTabeluSanse();
 	}
+
 	/**
-	 * Poziva metodu za dodavanje pretnje u listu kao i metodu za naknadno popunavanje tabele pretnji
+	 * Poziva metodu za dodavanje pretnje u listu kao i metodu za naknadno
+	 * popunavanje tabele pretnji
+	 * 
 	 * @param naziv
 	 * @param ponder
 	 */
@@ -200,100 +228,131 @@ public class Kontroler {
 		logika.dodajPretnjuUListu(naziv, ponder);
 		popuniTabeluPretnje();
 	}
+
 	/**
-	 * Poziva se svaki put kada se doda nova snaga. Prosledjuje se lista snaga koje ce biti prikazane u tabeli
+	 * Poziva se svaki put kada se doda nova snaga. Prosledjuje se lista snaga
+	 * koje ce biti prikazane u tabeli
 	 * 
 	 */
 	public static void popuniTabeluSnage() {
 		frame.srediTabeluSnage(logika.getListaSnage());
-		
+
 	}
+
 	/**
-	 * Poziva se svaki put kada se doda nova slabost. Prosledjuje se lista slabosti koje ce biti prikazane u tabeli
+	 * Poziva se svaki put kada se doda nova slabost. Prosledjuje se lista
+	 * slabosti koje ce biti prikazane u tabeli
 	 */
 	public static void popuniTabeluSlabosti() {
 		frame.srediTabeluSlabosti(logika.getListaSlabosti());
 	}
+
 	/**
-	 * Poziva se svaki put kada se doda nova sansa. Prosledjuje se lista sansi koje ce biti prikazane u tabeli
+	 * Poziva se svaki put kada se doda nova sansa. Prosledjuje se lista sansi
+	 * koje ce biti prikazane u tabeli
 	 */
 	public static void popuniTabeluSanse() {
 		frame.srediTabeluSanse(logika.getListaSanse());
 	}
+
 	/**
-	 * Poziva se svaki put kada se doda nova pretnja. Prosledjuje se lista pretnji koje ce biti prikazane u tabeli
+	 * Poziva se svaki put kada se doda nova pretnja. Prosledjuje se lista
+	 * pretnji koje ce biti prikazane u tabeli
 	 */
 	public static void popuniTabeluPretnje() {
 		frame.srediTabeluPretnje(logika.getListaPretnje());
 	}
+
 	/**
 	 * Prosledjuje listu strategija iz logike u grafiku gde ce biti prikazane.
+	 * 
 	 * @return ArrayList
 	 */
-	public static ArrayList<Strategija> getListaStrategija(){
+	public static ArrayList<Strategija> getListaStrategija() {
 		return logika.getStrategije();
 	}
+
 	/**
 	 * Prosledjuje listu snaga iz logike u grafiku gde ce biti prikazane.
+	 * 
 	 * @return ArrayList
 	 */
 	public static ArrayList<Swot> getListaSnage() {
 		// TODO Auto-generated method stub
 		return logika.getListaSnage();
 	}
+
 	/**
 	 * Prosledjuje listu slabosti iz logike u grafiku gde ce biti prikazane.
+	 * 
 	 * @return ArrayList
 	 */
 	public static ArrayList<Swot> getListaSlabosti() {
 		// TODO Auto-generated method stub
 		return logika.getListaSlabosti();
 	}
+
 	/**
 	 * Prosledjuje listu sansi iz logike u grafiku gde ce biti prikazane.
+	 * 
 	 * @return ArrayList
 	 */
 	public static ArrayList<Swot> getListaSanse() {
 		// TODO Auto-generated method stub
 		return logika.getListaSanse();
 	}
+
 	/**
 	 * Prosledjuje listu pretnji iz logike u grafiku gde ce biti prikazane.
+	 * 
 	 * @return ArrayList
 	 */
 	public static ArrayList<Swot> getListaPretnje() {
 		// TODO Auto-generated method stub
 		return logika.getListaPretnje();
 	}
+
 	/**
-	 * Prosledjuje ponder iz logike u grafiku gde ce se koristiti za racunanje ukupne atraktivnosti.
+	 * Prosledjuje ponder iz logike u grafiku gde ce se koristiti za racunanje
+	 * ukupne atraktivnosti.
+	 * 
 	 * @return double ponder
 	 */
 	public static double getPonderSnaga(String naziv) {
 		// TODO Auto-generated method stub
 		return logika.vratiPonderSnagaNaziv(naziv);
 	}
+
 	/**
-	 * Prosledjuje ponder iz logike u grafiku gde ce se koristiti za racunanje ukupne atraktivnosti.
+	 * Prosledjuje ponder iz logike u grafiku gde ce se koristiti za racunanje
+	 * ukupne atraktivnosti.
+	 * 
 	 * @return double ponder
 	 */
-	public static double getPonderSlabost(String naziv){
+	public static double getPonderSlabost(String naziv) {
 		return logika.vratiPonderSlabostNaziv(naziv);
 	}
+
 	/**
-	 * Prosledjuje ponder iz logike u grafiku gde ce se koristiti za racunanje ukupne atraktivnosti.
+	 * Prosledjuje ponder iz logike u grafiku gde ce se koristiti za racunanje
+	 * ukupne atraktivnosti.
+	 * 
 	 * @return double ponder
 	 */
-	public static double getPonderSansa(String naziv){
+	public static double getPonderSansa(String naziv) {
 		return logika.vratiPonderSansaNaziv(naziv);
 	}
+
 	/**
-	 * Prosledjuje ponder iz logike u grafiku gde ce se koristiti za racunanje ukupne atraktivnosti.
+	 * Prosledjuje ponder iz logike u grafiku gde ce se koristiti za racunanje
+	 * ukupne atraktivnosti.
+	 * 
 	 * @return double ponder
 	 */
-	public static double getPonderPretnja(String naziv){
+	public static double getPonderPretnja(String naziv) {
 		return logika.vratiPonderPretnjaNaziv(naziv);
 	}
+
 	/**
 	 * Kreira prozor za unosenje snaga, slabosti, sansi i pretnji.
 	 */
@@ -306,24 +365,26 @@ public class Kontroler {
 	/**
 	 * Kreira i prikazuje prozor za prikaz i poredjenje strategija.
 	 */
-	public static void napraviProzorUporediStrategije(){
+	public static void napraviProzorUporediStrategije() {
 		GUIUporediStrategije prozorZaStrategije = new GUIUporediStrategije();
 		prozorZaStrategije.setVisible(true);
 		prozorZaStrategije.setLocationRelativeTo(null);
 	}
+
 	/**
 	 * Kreira prozor za prikaz podataka o autorima.
 	 */
 	public static void prikaziPodatkeOAutorima() {
 
 		JOptionPane.showMessageDialog(frame, "Autori:\nAndrija Djordjevic\nPetar Karuovic\nMiljan Jovic\n\nFON 2016");
-		
+
 	}
-	
+
 	/**
-	 * Poziva se klikom na dugme New. Pravi nove objekte klasa Logika i GlavniProzor sa praznim listama.
+	 * Poziva se klikom na dugme New. Pravi nove objekte klasa Logika i
+	 * GlavniProzor sa praznim listama.
 	 */
-	public static void refresuj(){
+	public static void refresuj() {
 		frame.dispose();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -341,120 +402,130 @@ public class Kontroler {
 			}
 		});
 	}
-	
-	public static void prikaziProzorZaPovezivanjeNaServer(){
-		
+
+	public static void prikaziProzorZaPovezivanjeNaServer() {
+
 		final JDialog poveziSeNaServerProzor;
 		poveziSeNaServerProzor = new JDialog(clientFrame, "Povezivanje", true);
 		poveziSeNaServerProzor.setBounds(150, 150, 300, 75);
 		poveziSeNaServerProzor.setLocationRelativeTo(null);
-		
+
 		JPanel contentPane = new JPanel(new FlowLayout());
 		final JTextField adresa = new JTextField();
 		adresa.setPreferredSize(new Dimension(150, 25));
 		JButton povezi = new JButton("Povezi se");
-		
-		
+
 		povezi.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String ip = adresa.getText();
-				Pattern regex = Pattern.compile("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-						"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-						"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-						"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
+				Pattern regex = Pattern
+						.compile("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+								+ "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 				Matcher matcher = regex.matcher(ip);
-				if(matcher.matches()){
-					if(povezan = poveziSeNaServer(adresa.getText())){
-						JOptionPane.showMessageDialog(poveziSeNaServerProzor, "Uspesno povezivanje!", "Povezano!", JOptionPane.INFORMATION_MESSAGE);
+				if (matcher.matches()) {
+					if (povezan = poveziSeNaServer(adresa.getText())) {
+						JOptionPane.showMessageDialog(poveziSeNaServerProzor, "Uspesno povezivanje!", "Povezano!",
+								JOptionPane.INFORMATION_MESSAGE);
 						poveziSeNaServerProzor.dispose();
-					}else{
-						JOptionPane.showMessageDialog(poveziSeNaServerProzor, "Greska pri povezivanju, pokusajte ponovo!", "Greska!", JOptionPane.ERROR_MESSAGE);
-						
+					} else {
+						JOptionPane.showMessageDialog(poveziSeNaServerProzor,
+								"Greska pri povezivanju, pokusajte ponovo!", "Greska!", JOptionPane.ERROR_MESSAGE);
+
 					}
-				}else{
+				} else {
 					JOptionPane.showMessageDialog(poveziSeNaServerProzor, "Neodgovarajuci format IP adrese!");
 				}
-				
-				
+
 			}
 		});
-		
+
 		contentPane.add(adresa);
 		contentPane.add(povezi);
 		poveziSeNaServerProzor.setContentPane(contentPane);
 		poveziSeNaServerProzor.setVisible(true);
 	}
-	
-	public static boolean poveziSeNaServer(String ip){
-		
+
+	public static boolean poveziSeNaServer(String ip) {
+
 		try {
 			client = new Client(InetAddress.getByName(ip));
 			client.send("CaoPoyy");
-			
+
 			String primljeno = client.receive();
-			
+
 			popuniListePodataka(primljeno);
 			return true;
 		} catch (Exception e) {
 			return false;
-		} 
-		
-		
+		}
+
 	}
-	
+
 	private static void popuniListePodataka(String primljeno) {
-		String [] strategije = primljeno.split("\n");
-		String [] podaciJednaStrategija;
-		String [] snage;
-		String [] slabosti;
-		String [] sanse;
-		String [] pretnje;
-		
+		String[] strategije = primljeno.split("\n");
+		String[] podaciJednaStrategija;
+		String[] snage;
+		String[] slabosti;
+		String[] sanse;
+		String[] pretnje;
+
 		Strategija nova;
 		for (String strategija : strategije) {
 			podaciJednaStrategija = strategija.split("\t");
-			nova = new Strategija(podaciJednaStrategija[0]);//prvi podstring pre \t je ime strategije, ostali su redom: snage, slabosti, sanse, pretnje
-			snage = podaciJednaStrategija[1].split(" ");//nazivi i ponderi snaga su odvojeni razmakom, npr: naziv1 ponder1 naziv2 ponder2
+			nova = new Strategija(podaciJednaStrategija[0]);// prvi podstring
+															// pre \t je ime
+															// strategije,
+															// ostali su redom:
+															// snage, slabosti,
+															// sanse, pretnje
+			snage = podaciJednaStrategija[1].split(" ");// nazivi i ponderi
+														// snaga su odvojeni
+														// razmakom, npr: naziv1
+														// ponder1 naziv2
+														// ponder2
 			slabosti = podaciJednaStrategija[2].split(" ");
 			sanse = podaciJednaStrategija[3].split(" ");
 			pretnje = podaciJednaStrategija[4].split(" ");
-			
-			//proveravamo da li nema snaga u strategiji, isto ce biti i za ostale swotove
-			if(!podaciJednaStrategija[1].equals("nema")){
-				for(int i = 0 ; i < snage.length; i = i + 2){
-					nova.dodajSnaguBezAtraktivnosti(snage[i],Double.parseDouble(snage[i+1]));
+
+			// proveravamo da li nema snaga u strategiji, isto ce biti i za
+			// ostale swotove
+			if (!podaciJednaStrategija[1].equals("nema")) {
+				for (int i = 0; i < snage.length; i = i + 2) {
+					nova.dodajSnaguBezAtraktivnosti(snage[i], Double.parseDouble(snage[i + 1]));
 				}
 			}
-			//dodavanje slabosti
-			if(!podaciJednaStrategija[2].equals("nema")){
-				for(int i = 0 ; i < slabosti.length; i = i + 2){
-					nova.dodajSlabostBezAtraktivnosti(slabosti[i],Double.parseDouble(slabosti[i+1]));
+			// dodavanje slabosti
+			if (!podaciJednaStrategija[2].equals("nema")) {
+				for (int i = 0; i < slabosti.length; i = i + 2) {
+					nova.dodajSlabostBezAtraktivnosti(slabosti[i], Double.parseDouble(slabosti[i + 1]));
 				}
 			}
-			//dodavanje sansi
-			if(!podaciJednaStrategija[3].equals("nema")){
-				for(int i = 0 ; i < sanse.length; i = i + 2){
-					nova.dodajSansuBezAtraktivnosti(sanse[i],Double.parseDouble(sanse[i+1]));
+			// dodavanje sansi
+			if (!podaciJednaStrategija[3].equals("nema")) {
+				for (int i = 0; i < sanse.length; i = i + 2) {
+					nova.dodajSansuBezAtraktivnosti(sanse[i], Double.parseDouble(sanse[i + 1]));
 				}
 			}
-			
-			//dodavanje pretnji
-			if(!podaciJednaStrategija[4].equals("nema")){
-				for(int i = 0 ; i < pretnje.length; i = i + 2){
-					nova.dodajPretnjuBezAtraktivnosti(pretnje[i],Double.parseDouble(pretnje[i+1]));
+
+			// dodavanje pretnji
+			if (!podaciJednaStrategija[4].equals("nema")) {
+				for (int i = 0; i < pretnje.length; i = i + 2) {
+					nova.dodajPretnjuBezAtraktivnosti(pretnje[i], Double.parseDouble(pretnje[i + 1]));
 				}
 			}
-			
+
 			logika.dodajStrategiju(nova);
 		}
-				
+
 	}
-	public static boolean posaljiPodatkeServeru(){
+
+	public static boolean posaljiPodatkeServeru() {
 		try {
 			client.send(vratiStringSaPodacima());
-			JOptionPane.showMessageDialog(clientFrame.getContentPane(), "Hvala na saradnji!", "Poruka", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(clientFrame.getContentPane(), "Hvala na saradnji!", "Poruka",
+					JOptionPane.INFORMATION_MESSAGE);
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -462,46 +533,50 @@ public class Kontroler {
 			return false;
 		}
 	}
+
 	private static String vratiStringSaPodacima() {
 		String povratna = "";
 		ArrayList<SwotStrat> swot;
 		ArrayList<Strategija> listaStrategija = logika.getStrategije();
 		for (Strategija strategija : listaStrategija) {
-			swot = (ArrayList<SwotStrat>)strategija.getSnage();
+			swot = (ArrayList<SwotStrat>) strategija.getSnage();
 			for (SwotStrat swotStrat : swot) {
-				povratna += swotStrat.getAtraktivnost()+" ";
+				povratna += swotStrat.getAtraktivnost() + " ";
 			}
-			swot = (ArrayList<SwotStrat>)strategija.getSlabosti();
+			swot = (ArrayList<SwotStrat>) strategija.getSlabosti();
 			for (SwotStrat swotStrat : swot) {
-				povratna += swotStrat.getAtraktivnost()+" ";
+				povratna += swotStrat.getAtraktivnost() + " ";
 			}
-			swot = (ArrayList<SwotStrat>)strategija.getSanse();
+			swot = (ArrayList<SwotStrat>) strategija.getSanse();
 			for (SwotStrat swotStrat : swot) {
-				povratna += swotStrat.getAtraktivnost()+" ";
+				povratna += swotStrat.getAtraktivnost() + " ";
 			}
-			swot = (ArrayList<SwotStrat>)strategija.getPretnje();
+			swot = (ArrayList<SwotStrat>) strategija.getPretnje();
 			for (SwotStrat swotStrat : swot) {
-				povratna += swotStrat.getAtraktivnost()+" ";
+				povratna += swotStrat.getAtraktivnost() + " ";
 			}
 			povratna += "\n";
 		}
 		return povratna;
 	}
+
 	public static void otvoriKlijentProzor() {
 		clientFrame = new ClientGUI();
 		clientFrame.setVisible(true);
 		clientFrame.setLocationRelativeTo(null);
 		pocetni.dispose();
-		
+
 	}
+
 	public static void otvoriServerProzor() {
 		frame = new GlavniProzor();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		pocetni.dispose();
-		
+
 	}
-	//server kod
+
+	// server kod
 	public static void pokreniServer() {
 		try {
 			InetAddress ip = InetAddress.getLocalHost();
@@ -520,16 +595,16 @@ public class Kontroler {
 		logika.setStrategije(server.vratiStrategije());
 		JOptionPane.showMessageDialog(frame, "Server je ugasen", "Obavestenje", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	public static void upisiUPDF() {
 		String nazivFajla = " ";
 		JFileChooser upis = new JFileChooser();
 		upis.setCurrentDirectory(new File(System.getProperty("user.home")));
 		upis.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int povratnaVrednost = upis.showSaveDialog(frame.getContentPane());
-		if (povratnaVrednost == JFileChooser.APPROVE_OPTION) 
+		if (povratnaVrednost == JFileChooser.APPROVE_OPTION)
 			nazivFajla = upis.getSelectedFile().getAbsolutePath();
-			
+
 		String snage = "", slabost = "", pretnje = "", sanse = "", strategije = "";
 		for (int i = 0; i < getListaSnage().size(); i++) {
 			snage += "-" + getListaSnage().get(i).getNaziv() + "\n";
@@ -561,15 +636,17 @@ public class Kontroler {
 		}
 		Document dok = new Document();
 		PdfPTable t = new PdfPTable(2);
-//		GregorianCalendar datum = new GregorianCalendar();
-//		String d = "" + datum.get(GregorianCalendar.DAY_OF_MONTH) + "." + datum.get(GregorianCalendar.MONTH) + "."
-//				+ datum.get(GregorianCalendar.YEAR) + ", " + datum.get(GregorianCalendar.HOUR_OF_DAY) + ":"
-//				+ datum.get(GregorianCalendar.MINUTE);
+		// GregorianCalendar datum = new GregorianCalendar();
+		// String d = "" + datum.get(GregorianCalendar.DAY_OF_MONTH) + "." +
+		// datum.get(GregorianCalendar.MONTH) + "."
+		// + datum.get(GregorianCalendar.YEAR) + ", " +
+		// datum.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+		// + datum.get(GregorianCalendar.MINUTE);
 		Date datum = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 		String d = sdf.format(datum);
 		try {
-			PdfWriter.getInstance(dok, new FileOutputStream(nazivFajla+".pdf"));
+			PdfWriter.getInstance(dok, new FileOutputStream(nazivFajla + ".pdf"));
 			dok.open();
 			Paragraph par = new Paragraph();
 			Paragraph par2 = new Paragraph();
@@ -602,107 +679,133 @@ public class Kontroler {
 			e.printStackTrace();
 		}
 	}
+
 	public static void oceniStrategiju(int selectedRow) {
 		ProzorOceniStrategiju prozor = new ProzorOceniStrategiju(logika.getStrategije().get(selectedRow), selectedRow);
 		prozor.setLocationRelativeTo(null);
 	}
-	//pisao u 4 ujutru, ne znam zasto iz guia ne dodajem atraktivnost direktno u snagu, 
-	//izbegavam semanticke vratolomije xexe, iako mozak ne radi, nadam se da aplikacija hoce
-	
+	// pisao u 4 ujutru, ne znam zasto iz guia ne dodajem atraktivnost direktno
+	// u snagu,
+	// izbegavam semanticke vratolomije xexe, iako mozak ne radi, nadam se da
+	// aplikacija hoce
+
 	public static void oceniSnagu(int rb, String naziv, double atraktivnost) {
 		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSnage();
 		for (SwotStrat swotStrat : pom) {
-			if(swotStrat.getNaziv().equals(naziv))
+			if (swotStrat.getNaziv().equals(naziv))
 				swotStrat.setAtraktivnost(atraktivnost);
 		}
-		
+
 	}
+
 	public static void oceniSlabost(int rb, String naziv, double atraktivnost) {
 		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSlabosti();
 		for (SwotStrat swotStrat : pom) {
-			if(swotStrat.getNaziv().equals(naziv))
+			if (swotStrat.getNaziv().equals(naziv))
 				swotStrat.setAtraktivnost(atraktivnost);
 		}
-		
+
 	}
+
 	public static void oceniSansu(int rb, String naziv, double atraktivnost) {
 		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getSanse();
 		for (SwotStrat swotStrat : pom) {
-			if(swotStrat.getNaziv().equals(naziv))
+			if (swotStrat.getNaziv().equals(naziv))
 				swotStrat.setAtraktivnost(atraktivnost);
 		}
-		
+
 	}
+
 	public static void oceniPretnje(int rb, String naziv, double atraktivnost) {
 		ArrayList<SwotStrat> pom = (ArrayList<SwotStrat>) logika.getStrategije().get(rb).getPretnje();
 		for (SwotStrat swotStrat : pom) {
-			if(swotStrat.getNaziv().equals(naziv))
+			if (swotStrat.getNaziv().equals(naziv))
 				swotStrat.setAtraktivnost(atraktivnost);
 		}
-		
+
 	}
+
 	public static void ugasiAplikacijuKlijent() {
-		
-		if(JOptionPane.showConfirmDialog(clientFrame,"Da li ste sigurni da zelite da ugasite aplikaciju?", 
-				"Izlaz" , 
-				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+
+		if (JOptionPane.showConfirmDialog(clientFrame, "Da li ste sigurni da zelite da ugasite aplikaciju?", "Izlaz",
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
-		
+
 	}
-	public static void azurirajBrojacSnageSlabosti(double ponder){
-		if(brojaci[0] + ponder > 1)
+
+	public static void azurirajBrojacSnageSlabosti(double ponder) {
+		if (brojaci[0] + ponder > 1)
 			throw new RuntimeException("Zbir pondera je veci od 1");
-		
-		brojaci[0]+=ponder;
+
+		brojaci[0] += ponder;
+		frame.textVrednostiSumaSS(brojaci[0]);
 	}
-	
-	
-	public static void azurirajBrojacSansePretnje(double ponder){
-		if(brojaci[1] + ponder > 1)
+
+	public static void azurirajBrojacSansePretnje(double ponder) {
+		if (brojaci[1] + ponder > 1)
 			throw new RuntimeException("Zbir pondera je veci od 1");
-		
-		brojaci[1]+=ponder;
+
+		brojaci[1] += ponder;
+		frame.textVrednostiSumaSP(brojaci[1]);
+
 	}
-	
-	public static void azurirajPondereDeserijalizacija(){
+
+	public static void proveriPondere() {
+		if (brojaci[0] != 1 || brojaci[1] != 1)
+			throw new RuntimeException("Proverite zbir pondera!");
+	}
+
+	public static void azurirajPondereDeserijalizacija() {
 		brojaci[0] = 0;
 		brojaci[1] = 0;
-		
-		for(Swot s : logika.getListaSnage()){
-			brojaci[0]+=s.getPonder();
+
+		for (Swot s : logika.getListaSnage()) {
+			brojaci[0] += s.getPonder();
 		}
-		for(Swot s : logika.getListaSlabosti()){
-			brojaci[0]+=s.getPonder();
+		for (Swot s : logika.getListaSlabosti()) {
+			brojaci[0] += s.getPonder();
 		}
-		for(Swot s : logika.getListaSanse()){
-			brojaci[1]+=s.getPonder();
+		for (Swot s : logika.getListaSanse()) {
+			brojaci[1] += s.getPonder();
 		}
-		for(Swot s : logika.getListaPretnje()){
-			brojaci[1]+=s.getPonder();
+		for (Swot s : logika.getListaPretnje()) {
+			brojaci[1] += s.getPonder();
 		}
+
+		frame.textVrednostiSumaSS(brojaci[0]);
+		frame.textVrednostiSumaSP(brojaci[1]);
 	}
-	
-	public static void napraviTows(){
-		TOWS t = new TOWS(getListaSanse(), getListaPretnje(), getListaSnage(), getListaSlabosti(), getListaStrategija());
+
+	public static void napraviTows() {
+		TOWS t = new TOWS(getListaSanse(), getListaPretnje(), getListaSnage(), getListaSlabosti(),
+				getListaStrategija());
 		t.setVisible(true);
 		t.setLocationRelativeTo(null);
 	}
-	
-	public static boolean daLiJePovezan(){
+
+	public static boolean daLiJePovezan() {
 		return povezan;
 	}
+
 	public static void napraviProzorNovaStrat() {
-		GUIStrategija prozorNovaStrategija = new GUIStrategija();
-		prozorNovaStrategija.setVisible(true);
-		prozorNovaStrategija.setLocationRelativeTo(null);
-		
+		try {
+			proveriPondere();
+			GUIStrategija prozorNovaStrategija = new GUIStrategija();
+			prozorNovaStrategija.setVisible(true);
+			prozorNovaStrategija.setLocationRelativeTo(null);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frame.getContentPane(), e.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
-	public static void smanjiBrojNeocenjenihStrategija(){
+
+	public static void smanjiBrojNeocenjenihStrategija() {
 		clientFrame.smanjiBrojNeocenjenihStrategija();
 	}
+
 	public static void refresujKlijent() {
-		
+
 		clientFrame.dispose();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -717,7 +820,7 @@ public class Kontroler {
 				}
 			}
 		});
-		
+
 	}
 
 }

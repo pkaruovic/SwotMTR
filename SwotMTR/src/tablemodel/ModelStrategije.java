@@ -15,7 +15,7 @@ import logika.Strategija;
  */
 public class ModelStrategije extends AbstractTableModel {
 	private ArrayList<Strategija> podaci;
-	private String[] naziv = new String[] { "Strategija", "Atraktivnost" };
+	private String[] naziv = new String[] { "Strategija", "Ukupna atraktivnost" };
 
 	/**
 	 * Konstruktor koji inicijalizuje listu podataka na prosledjenu listu,

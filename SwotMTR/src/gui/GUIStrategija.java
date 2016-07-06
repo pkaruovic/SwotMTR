@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dialog.ModalExclusionType;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Klasa GUIStrategija pomocu koje se kreira strategija za koju se biraju snage,
@@ -55,6 +56,8 @@ public class GUIStrategija extends JFrame {
 	private JButton buttonOtkazi;
 
 	private Strategija novaStrategija;
+	private JLabel lblAtraktivnost;
+	private JLabel lblNaziv;
 
 	/**
 	 * Create the frame.
@@ -78,18 +81,21 @@ public class GUIStrategija extends JFrame {
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			panel.add(getComboSnage());
-			panel.add(getComboAtraktivnostSnage());
-			panel.add(getBtnDodajSnagu());
-			panel.add(getComboSlabosti());
-			panel.add(getComboAtraktivnostSlabosti());
-			panel.add(getBtnDodajSlabost());
-			panel.add(getComboSanse());
-			panel.add(getComboAtraktivnostSanse());
-			panel.add(getBtnDodajSansu());
-			panel.add(getComboPretnje());
-			panel.add(getComboAtraktivnostPretnje());
-			panel.add(getBtnDodajPretnju());
+			panel.setLayout(new MigLayout("", "[300px][40px][115px]", "[][40px][40px][40px][40px]"));
+			panel.add(getLblNaziv(), "cell 0 0,alignx center");
+			panel.add(getLblAtraktivnost(), "cell 1 0,alignx center");
+			panel.add(getComboSnage(), "cell 0 1,alignx left,aligny top");
+			panel.add(getComboAtraktivnostSnage(), "cell 1 1,alignx center,aligny center");
+			panel.add(getBtnDodajSnagu(), "cell 2 1,alignx left,aligny center");
+			panel.add(getComboSlabosti(), "cell 0 2,alignx left,aligny top");
+			panel.add(getComboAtraktivnostSlabosti(), "cell 1 2,alignx center,aligny center");
+			panel.add(getBtnDodajSlabost(), "cell 2 2,alignx left,aligny center");
+			panel.add(getComboSanse(), "cell 0 3,alignx left,aligny top");
+			panel.add(getComboAtraktivnostSanse(), "cell 1 3,alignx center,aligny center");
+			panel.add(getBtnDodajSansu(), "cell 2 3,alignx left,aligny center");
+			panel.add(getComboPretnje(), "cell 0 4,alignx left,aligny top");
+			panel.add(getComboAtraktivnostPretnje(), "cell 1 4,alignx center,aligny center");
+			panel.add(getBtnDodajPretnju(), "cell 2 4,alignx left,aligny center");
 			iskljuciVidljivost();
 		}
 		return panel;
@@ -530,6 +536,8 @@ public class GUIStrategija extends JFrame {
 	 * Metoda postavlja vidljivost svih komponenti na true.
 	 */
 	public void ukljuciVidljivost(){
+		lblNaziv.setVisible(true);
+		lblAtraktivnost.setVisible(true);
 		comboSnage.setVisible(true);
 		comboAtraktivnostSnage.setVisible(true);
 		comboSlabosti.setVisible(true);
@@ -549,6 +557,8 @@ public class GUIStrategija extends JFrame {
 	 * Metoda postavlja vidljivost svih komponenti na false.
 	 */
 	public void iskljuciVidljivost(){
+		lblNaziv.setVisible(false);
+		lblAtraktivnost.setVisible(false);
 		comboSnage.setVisible(false);
 		comboAtraktivnostSnage.setVisible(false);
 		comboSlabosti.setVisible(false);
@@ -561,5 +571,17 @@ public class GUIStrategija extends JFrame {
 		btnDodajSnagu.setVisible(false);
 		btnDodajSlabost.setVisible(false);
 		btnDodajSansu.setVisible(false);
+	}
+	private JLabel getLblAtraktivnost() {
+		if (lblAtraktivnost == null) {
+			lblAtraktivnost = new JLabel("Atraktivnost");
+		}
+		return lblAtraktivnost;
+	}
+	private JLabel getLblNaziv() {
+		if (lblNaziv == null) {
+			lblNaziv = new JLabel("Naziv");
+		}
+		return lblNaziv;
 	}
 }
