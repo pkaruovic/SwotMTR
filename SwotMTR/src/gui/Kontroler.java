@@ -361,6 +361,13 @@ public class Kontroler {
 		prozorNoviSwot.setVisible(true);
 		prozorNoviSwot.setLocationRelativeTo(null);
 	}
+	
+	public static void napraviPopunjenProzorNoviSwot(String naziv, String ponder, int tip) {
+		ProzorNoviSwot prozorNoviSwot = new ProzorNoviSwot();
+		prozorNoviSwot.setVisible(true);
+		prozorNoviSwot.setLocationRelativeTo(null);
+		prozorNoviSwot.popuni(naziv, ponder, tip);
+	}
 
 	/**
 	 * Kreira i prikazuje prozor za prikaz i poredjenje strategija.
@@ -460,7 +467,6 @@ public class Kontroler {
 		} catch (Exception e) {
 			return false;
 		}
-
 	}
 
 	private static void popuniListePodataka(String primljeno) {
@@ -822,5 +828,34 @@ public class Kontroler {
 		});
 
 	}
+	
+	public static void obrisiSnagu(String naziv){
+		logika.obrisiSnaguIzListe(naziv);
+		frame.srediTabeluSnage(getListaSnage());
+		
+		azurirajPondereDeserijalizacija();
+	}
+	
+	public static void obrisiSlabost(String naziv){
+		logika.obrisiSlabostIzListe(naziv);
+		frame.srediTabeluSlabosti(getListaSlabosti());
+		
+		azurirajPondereDeserijalizacija();
+	}
+
+	public static void obrisiSansu(String naziv){
+		logika.obrisiSansuIzListe(naziv);
+		frame.srediTabeluSanse(getListaSanse());
+		
+		azurirajPondereDeserijalizacija();
+	}
+
+	public static void obrisiPretnju(String naziv){
+		logika.obrisiPretnjuIzListe(naziv);
+		frame.srediTabeluPretnje(getListaPretnje());
+		
+		azurirajPondereDeserijalizacija();
+	}
+
 
 }

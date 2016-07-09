@@ -42,6 +42,7 @@ public class ProzorNoviSwot extends JFrame {
 	private JButton btnSacuvaj;
 	private JButton btnOtkazi;
 	private ButtonGroup grupnjak;
+	private String naziv;
 
 	/**
 	 * Create the frame.
@@ -175,15 +176,19 @@ public class ProzorNoviSwot extends JFrame {
 					try {
 						Swot s = new Swot(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						if (rdbtnSnaga.isSelected() && !Kontroler.getListaSnage().contains(s)) {
+							Kontroler.obrisiSnagu(naziv);
 							Kontroler.azurirajBrojacSnageSlabosti(Double.parseDouble(txtPonder.getText()));
 							Kontroler.dodajSnagu(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						} else if (rdbtnSlabost.isSelected() && !Kontroler.getListaSlabosti().contains(s)) {
+							Kontroler.obrisiSlabost(naziv);
 							Kontroler.azurirajBrojacSnageSlabosti(Double.parseDouble(txtPonder.getText()));
 							Kontroler.dodajSlabost(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						} else if (rdbtnSansa.isSelected() && !Kontroler.getListaSanse().contains(s)) {
+							Kontroler.obrisiSansu(naziv);
 							Kontroler.azurirajBrojacSansePretnje(Double.parseDouble(txtPonder.getText()));
 							Kontroler.dodajSansu(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						} else if (rdbtnPretnja.isSelected() && !Kontroler.getListaPretnje().contains(s)) {
+							Kontroler.obrisiPretnju(naziv);
 							Kontroler.azurirajBrojacSansePretnje(Double.parseDouble(txtPonder.getText()));
 							Kontroler.dodajPretnju(txtNaziv.getText(), Double.parseDouble(txtPonder.getText()));
 						} else {
@@ -216,5 +221,31 @@ public class ProzorNoviSwot extends JFrame {
 			});
 		}
 		return btnOtkazi;
+	}
+	
+	public void popuni(String naziv, String ponder, int tip){
+		this.naziv = naziv;
+		txtNaziv.setText(naziv);
+		txtPonder.setText(ponder);
+		switch(tip){
+		case 1:
+			rdbtnSnaga.setSelected(true);
+			break;
+		case 2:
+			rdbtnSlabost.setSelected(true);
+			break;
+		case 3:
+			rdbtnSansa.setSelected(true);
+			break;
+		case 4:
+			rdbtnPretnja.setSelected(true);
+			break;
+		default:
+			throw new RuntimeException("Nepravilno unesen tip");
+		}
+		rdbtnSnaga.setEnabled(false);
+		rdbtnSlabost.setEnabled(false);
+		rdbtnSansa.setEnabled(false);
+		rdbtnPretnja.setEnabled(false);
 	}
 }

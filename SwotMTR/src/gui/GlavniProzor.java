@@ -17,6 +17,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
@@ -41,9 +42,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+
+import com.itextpdf.text.log.SysoLogger;
+
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
 
 /**
  * Klasa koja predstavlja pocetni prozor aplikacije i glavnu radnu povrsinu za
@@ -90,6 +99,18 @@ public class GlavniProzor extends JFrame {
 	private JTextField textSnageSlabosti;
 	private JLabel lblSanseIPretnje;
 	private JTextField textSansePretnje;
+	private JPopupMenu popupMenu;
+	private JMenuItem mntmIzmeni;
+	private JMenuItem mntmObrisi;
+	private JPopupMenu popupMenu_1;
+	private JMenuItem menuItem;
+	private JMenuItem menuItem_1;
+	private JPopupMenu popupMenu_2;
+	private JMenuItem menuItem_2;
+	private JMenuItem menuItem_3;
+	private JPopupMenu popupMenu_3;
+	private JMenuItem menuItem_4;
+	private JMenuItem menuItem_5;
 	
 	public GlavniProzor() {
 		addWindowListener(new WindowAdapter() {
@@ -235,10 +256,12 @@ public class GlavniProzor extends JFrame {
 		if (Snage == null) {
 			Snage = new JTable();
 			Snage.setModel(new ModelTabele(Kontroler.getListaSnage(), new String[]{"Naziv snage", "Ponder"}));
+			Snage.setComponentPopupMenu(popupMenu);
 			Snage.setShowGrid(true);
 			Snage.setShowVerticalLines(true);
 			Snage.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 			Snage.getColumnModel().getColumn(0).setPreferredWidth(450);
+		    Snage.setRowSelectionAllowed(true);
 		}
 		return Snage;
 	}
@@ -247,10 +270,12 @@ public class GlavniProzor extends JFrame {
 		if (Slabosti == null) {
 			Slabosti = new JTable();
 			Slabosti.setModel(new ModelTabele(Kontroler.getListaSlabosti(), new String[]{"Naziv slabosti", "Ponder"}));
+			Slabosti.setComponentPopupMenu(popupMenu_1);
 			Slabosti.setShowGrid(true);
 			Slabosti.setShowVerticalLines(true);
 			Slabosti.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 			Slabosti.getColumnModel().getColumn(0).setPreferredWidth(450);
+		    Slabosti.setRowSelectionAllowed(true);
 		}
 		return Slabosti;
 	}
@@ -259,10 +284,12 @@ public class GlavniProzor extends JFrame {
 		if (Sanse == null) {
 			Sanse = new JTable();
 			Sanse.setModel(new ModelTabele(Kontroler.getListaSanse(), new String[]{"Naziv sanse", "Ponder"}));
+			Sanse.setComponentPopupMenu(popupMenu_2);
 			Sanse.setShowGrid(true);
 			Sanse.setShowVerticalLines(true);
 			Sanse.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 			Sanse.getColumnModel().getColumn(0).setPreferredWidth(450);
+		    Sanse.setRowSelectionAllowed(true);
 		}
 		return Sanse;
 	}
@@ -271,9 +298,11 @@ public class GlavniProzor extends JFrame {
 		if (Pretnje == null) {
 			Pretnje = new JTable();
 			Pretnje.setModel(new ModelTabele(Kontroler.getListaPretnje(), new String[]{"Naziv pretnje", "Ponder"}));
+			Pretnje.setComponentPopupMenu(popupMenu_3);
 			Pretnje.setShowGrid(true);
 			Pretnje.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 			Pretnje.getColumnModel().getColumn(0).setPreferredWidth(450);
+			Pretnje.setRowSelectionAllowed(true);
 		}
 		return Pretnje;
 	}
@@ -420,6 +449,7 @@ public class GlavniProzor extends JFrame {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
+			addPopup(scrollPane, getPopupMenu());
 			scrollPane.setViewportView(getSnage());
 		}
 		return scrollPane;
@@ -428,6 +458,7 @@ public class GlavniProzor extends JFrame {
 	private JScrollPane getScrollPane_1() {
 		if (scrollPane_1 == null) {
 			scrollPane_1 = new JScrollPane();
+			addPopup(scrollPane_1, getPopupMenu_1());
 			scrollPane_1.setViewportView(getSlabosti());
 		}
 		return scrollPane_1;
@@ -436,6 +467,7 @@ public class GlavniProzor extends JFrame {
 	private JScrollPane getScrollPane_2() {
 		if (scrollPane_2 == null) {
 			scrollPane_2 = new JScrollPane();
+			addPopup(scrollPane_2, getPopupMenu_2());
 			scrollPane_2.setViewportView(getSanse());
 		}
 		return scrollPane_2;
@@ -444,6 +476,7 @@ public class GlavniProzor extends JFrame {
 	private JScrollPane getScrollPane_3() {
 		if (scrollPane_3 == null) {
 			scrollPane_3 = new JScrollPane();
+			addPopup(scrollPane_3, getPopupMenu_3());
 			scrollPane_3.setViewportView(getPretnje());
 		}
 		return scrollPane_3;
@@ -626,5 +659,265 @@ public class GlavniProzor extends JFrame {
 	
 	public void textVrednostiSumaSP(double vrednost){
 		textSansePretnje.setText(String.format("%.2f", vrednost));
+	}
+	private JPopupMenu getPopupMenu() {
+		if (popupMenu == null) {
+			popupMenu = new JPopupMenu();
+			popupMenu.add(getMntmIzmeni());
+			popupMenu.add(getMntmObrisi());
+			popupMenu.addPopupMenuListener(new PopupMenuListener() {
+				
+				@Override
+				public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
+					 SwingUtilities.invokeLater(new Runnable() {
+		                    @Override
+		                    public void run() {
+		                        int rowAtPoint = Snage.rowAtPoint(SwingUtilities.convertPoint(popupMenu, new Point(0, 0), Snage));
+		                        if (rowAtPoint > -1) {
+		                            Snage.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+		                            Snage.setColumnSelectionInterval(0, 0);
+		                        }
+		                    }
+		                });
+					
+				}
+				
+				@Override
+				public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void popupMenuCanceled(PopupMenuEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
+		return popupMenu;
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
+	private JMenuItem getMntmIzmeni() {
+		if (mntmIzmeni == null) {
+			mntmIzmeni = new JMenuItem("Izmeni");
+			mntmIzmeni.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String naziv = (String) Snage.getValueAt(Snage.getSelectedRow(), 0);
+					String ponder = "" + Snage.getValueAt(Snage.getSelectedRow(), 1);
+					Kontroler.napraviPopunjenProzorNoviSwot(naziv, ponder, 1);
+				}
+			});
+		}
+		return mntmIzmeni;
+	}
+	private JMenuItem getMntmObrisi() {
+		if (mntmObrisi == null) {
+			mntmObrisi = new JMenuItem("Obrisi");
+			mntmObrisi.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Kontroler.obrisiSnagu((String) Snage.getValueAt(Snage.getSelectedRow(), Snage.getSelectedColumn()));
+				}
+			});
+		}
+		return mntmObrisi;
+	}
+	private JPopupMenu getPopupMenu_1() {
+		if (popupMenu_1 == null) {
+			popupMenu_1 = new JPopupMenu();
+			popupMenu_1.add(getMenuItem());
+			popupMenu_1.add(getMenuItem_1());
+			popupMenu_1.addPopupMenuListener(new PopupMenuListener() {
+				
+				@Override
+				public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {
+	                    @Override
+	                    public void run() {
+	                        int rowAtPoint = Slabosti.rowAtPoint(SwingUtilities.convertPoint(popupMenu_1, new Point(0, 0), Slabosti));
+	                        if (rowAtPoint > -1) {
+	                            Slabosti.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+	                            Slabosti.setColumnSelectionInterval(0, 0);
+	                        }
+	                    }
+	                });
+				}
+				
+				@Override
+				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void popupMenuCanceled(PopupMenuEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
+		return popupMenu_1;
+	}
+	private JMenuItem getMenuItem() {
+		if (menuItem == null) {
+			menuItem = new JMenuItem("Izmeni");
+			menuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String naziv = (String) Slabosti.getValueAt(Slabosti.getSelectedRow(), 0);
+					String ponder = "" + Slabosti.getValueAt(Slabosti.getSelectedRow(), 1);
+					Kontroler.napraviPopunjenProzorNoviSwot(naziv, ponder, 2);
+				}
+			});
+		}
+		return menuItem;
+	}
+	private JMenuItem getMenuItem_1() {
+		if (menuItem_1 == null) {
+			menuItem_1 = new JMenuItem("Obrisi");
+			menuItem_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Kontroler.obrisiSlabost((String) Slabosti.getValueAt(Slabosti.getSelectedRow(), Slabosti.getSelectedColumn()));
+				}
+			});
+		}
+		return menuItem_1;
+	}
+	private JPopupMenu getPopupMenu_2() {
+		if (popupMenu_2 == null) {
+			popupMenu_2 = new JPopupMenu();
+			popupMenu_2.add(getMenuItem_2());
+			popupMenu_2.add(getMenuItem_3());
+			popupMenu_2.addPopupMenuListener(new PopupMenuListener() {
+				
+				@Override
+				public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {
+	                    @Override
+	                    public void run() {
+	                        int rowAtPoint = Sanse.rowAtPoint(SwingUtilities.convertPoint(popupMenu_2, new Point(0, 0), Sanse));
+	                        if (rowAtPoint > -1) {
+	                            Sanse.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+	                            Sanse.setColumnSelectionInterval(0, 0);
+	                        }
+	                    }
+	                });
+					
+				}
+				
+				@Override
+				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void popupMenuCanceled(PopupMenuEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
+		return popupMenu_2;
+	}
+	private JMenuItem getMenuItem_2() {
+		if (menuItem_2 == null) {
+			menuItem_2 = new JMenuItem("Izmeni");
+			menuItem_2.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String naziv = (String) Sanse.getValueAt(Sanse.getSelectedRow(), 0);
+					String ponder = "" + Sanse.getValueAt(Sanse.getSelectedRow(), 1);
+					Kontroler.napraviPopunjenProzorNoviSwot(naziv, ponder, 3);
+				}
+			});
+		}
+		return menuItem_2;
+	}
+	private JMenuItem getMenuItem_3() {
+		if (menuItem_3 == null) {
+			menuItem_3 = new JMenuItem("Obrisi");
+			menuItem_3.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Kontroler.obrisiSansu((String) Sanse.getValueAt(Sanse.getSelectedRow(), Sanse.getSelectedColumn()));
+				}
+			});
+		}
+		return menuItem_3;
+	}
+	private JPopupMenu getPopupMenu_3() {
+		if (popupMenu_3 == null) {
+			popupMenu_3 = new JPopupMenu();
+			popupMenu_3.add(getMenuItem_4());
+			popupMenu_3.add(getMenuItem_5());
+			popupMenu_3.addPopupMenuListener(new PopupMenuListener() {
+				
+				@Override
+				public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {
+	                    @Override
+	                    public void run() {
+	                        int rowAtPoint = Pretnje.rowAtPoint(SwingUtilities.convertPoint(popupMenu_3, new Point(0, 0), Pretnje));
+	                        if (rowAtPoint > -1) {
+	                            Pretnje.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+	                            Pretnje.setColumnSelectionInterval(0, 0);
+	                        }
+	                    }
+	                });
+					
+				}
+				
+				@Override
+				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void popupMenuCanceled(PopupMenuEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
+		return popupMenu_3;
+	}
+	private JMenuItem getMenuItem_4() {
+		if (menuItem_4 == null) {
+			menuItem_4 = new JMenuItem("Izmeni");
+			menuItem_4.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String naziv = (String) Pretnje.getValueAt(Pretnje.getSelectedRow(), 0);
+					String ponder = "" + Pretnje.getValueAt(Pretnje.getSelectedRow(), 1);
+					Kontroler.napraviPopunjenProzorNoviSwot(naziv, ponder, 4);
+				}
+			});
+		}
+		return menuItem_4;
+	}
+	private JMenuItem getMenuItem_5() {
+		if (menuItem_5 == null) {
+			menuItem_5 = new JMenuItem("Obrisi");
+			menuItem_5.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Kontroler.obrisiPretnju((String) Pretnje.getValueAt(Pretnje.getSelectedRow(), Pretnje.getSelectedColumn()));
+				}
+			});
+		}
+		return menuItem_5;
 	}
 }
