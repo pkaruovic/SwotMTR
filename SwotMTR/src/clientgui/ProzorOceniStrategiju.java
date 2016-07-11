@@ -22,6 +22,7 @@ import gui.GUIStrategija;
 import gui.Kontroler;
 import logika.Strategija;
 import logika.SwotStrat;
+import net.miginfocom.swing.MigLayout;
 
 public class ProzorOceniStrategiju extends JFrame {
 
@@ -50,6 +51,9 @@ public class ProzorOceniStrategiju extends JFrame {
 	private int brojSlabosti;
 	private int brojSansi;
 	private int brojPretnji;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JPanel panel_2;
 	/**
 	 * Create the frame.
 	 */
@@ -84,6 +88,7 @@ public class ProzorOceniStrategiju extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.add(getPanel(), BorderLayout.CENTER);
 		setContentPane(contentPane);
+		contentPane.add(getPanel_2(), BorderLayout.SOUTH);
 		setVisible(true);
 	}
 
@@ -98,19 +103,21 @@ public class ProzorOceniStrategiju extends JFrame {
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			panel.add(getComboSnage());
-			panel.add(getComboAtraktivnostSnage());
-			panel.add(getBtnDodajSnagu());
-			panel.add(getComboSlabosti());
-			panel.add(getComboAtraktivnostSlabosti());
-			panel.add(getBtnDodajSlabost());
-			panel.add(getComboSanse());
-			panel.add(getComboAtraktivnostSanse());
-			panel.add(getBtnDodajSansu());
-			panel.add(getComboPretnje());
-			panel.add(getComboAtraktivnostPretnje());
-			panel.add(getBtnDodajPretnju());
-			panel.add(getBtnIzadji());
+			panel.setLayout(new MigLayout("", "[300px][40px][115px]", "[][40px][40px][40px][40px]"));
+			panel.add(getLblNewLabel(), "cell 0 0,alignx center");
+			panel.add(getLblNewLabel_1(), "cell 1 0");
+			panel.add(getComboSnage(), "cell 0 1,alignx left,aligny top");
+			panel.add(getComboAtraktivnostSnage(), "cell 1 1,alignx center,aligny center");
+			panel.add(getBtnDodajSnagu(), "cell 2 1,alignx left,aligny center");
+			panel.add(getComboSlabosti(), "cell 0 2,alignx left,aligny top");
+			panel.add(getComboAtraktivnostSlabosti(), "cell 1 2,alignx center,aligny center");
+			panel.add(getBtnDodajSlabost(), "cell 2 2,alignx left,aligny center");
+			panel.add(getComboSanse(), "cell 0 3,alignx left,aligny top");
+			panel.add(getComboAtraktivnostSanse(), "cell 1 3,alignx center,aligny center");
+			panel.add(getBtnDodajSansu(), "cell 2 3,alignx left,aligny center");
+			panel.add(getComboPretnje(), "cell 0 4,alignx left,aligny top");
+			panel.add(getComboAtraktivnostPretnje(), "cell 1 4,alignx center,aligny center");
+			panel.add(getBtnDodajPretnju(), "cell 2 4,alignx left,aligny center");
 		}
 		return panel;
 	}
@@ -408,4 +415,23 @@ public class ProzorOceniStrategiju extends JFrame {
 		return btnIzadji;
 	}
 	
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("Naziv");
+		}
+		return lblNewLabel;
+	}
+	private JLabel getLblNewLabel_1() {
+		if (lblNewLabel_1 == null) {
+			lblNewLabel_1 = new JLabel("Atraktivnost");
+		}
+		return lblNewLabel_1;
+	}
+	private JPanel getPanel_2() {
+		if (panel_2 == null) {
+			panel_2 = new JPanel();
+			panel_2.add(getBtnIzadji());
+		}
+		return panel_2;
+	}
 }
